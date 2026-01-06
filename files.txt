@@ -1,0 +1,455 @@
+.
+├── 10_day10_bots
+│   ├── 10_bot1.py
+│   └── day10_hyperliquid
+│       ├── 10_bollinger_bot.py
+│       └── nice_funcs.py
+├── 11_day11_bots
+│   ├── 11_bot2.py
+│   └── day11_hyperliquid
+│       ├── 11_sdz_bot.py
+│       └── nice_funcs.py
+├── 12_day12_bots
+│   ├── 12_bot3.py
+│   └── day12_hyperliquid
+│       ├── 12_vwap_bot.py
+│       └── nice_funcs.py
+├── 13_backtesting.py
+├── 1_turtle_trending_algo
+│   ├── 1_turtle_algo.py
+│   ├── config_ex.py
+│   ├── config.py
+│   └── functions.py
+├── 2.1-anaconda-pip-vsc.py
+├── 2_coding_basics.py
+├── 2_correlation_algo
+│   ├── 2_correlation.py
+│   ├── config_ex.py
+│   ├── config.py
+│   └── functions.py
+├── 3_consolidation_pop_algo
+│   ├── 3_consolidation_pop_algo.py
+│   ├── config_ex.py
+│   ├── config.py
+│   └── functions.py
+├── 4-algo_orders.py
+├── 4_nadarya_watson_algo
+│   ├── bot.py
+│   ├── config.py
+│   └── functions.py
+├── 5_market_maker
+│   ├── market-maker.py
+│   └── xconfig.py
+├── 5_risk
+│   ├── 5_risk_mgmt_hl.py
+│   ├── 5_risk.py
+│   └── nice_funcs.py
+├── 6 Bonus Algos.zip
+├── 6_mean_reversion
+│   └── 74_tickers_mean_reversion.py
+├── 6_sma.py
+├── 7_rsi.py
+├── 8_vwap.py
+├── 9_more_indicators
+│   ├── 9_vwma.py
+│   ├── pandas_ta_review.py
+│   └── talib_review.py
+├── atc_bootcamp
+│   ├── 10_day10_bots
+│   │   ├── 10_bot1.py
+│   │   └── day10_hyperliquid
+│   ├── 11_day11_bots
+│   │   ├── 11_bot2.py
+│   │   └── day11_hyperliquid
+│   ├── 12_day12_bots
+│   │   ├── 12_bot3.py
+│   │   └── day12_hyperliquid
+│   ├── 13_backtesting.py
+│   ├── 2.1-anaconda-pip-vsc.py
+│   ├── 2_coding_basics.py
+│   ├── 4-algo_orders.py
+│   ├── 5_risk
+│   │   ├── 5_risk_mgmt_hl.py
+│   │   ├── 5_risk.py
+│   │   └── nice_funcs.py
+│   ├── 6_sma.py
+│   ├── 7_rsi.py
+│   ├── 8_vwap.py
+│   ├── 9_more_indicators
+│   │   ├── 9_vwma.py
+│   │   ├── pandas_ta_review.py
+│   │   └── talib_review.py
+│   ├── Bonus_algos_6ofthem
+│   │   ├── 1_turtle_trending_algo
+│   │   ├── 2_correlation_algo
+│   │   ├── 3_consolidation_pop_algo
+│   │   ├── 4_nadarya_watson_algo
+│   │   ├── 5_market_maker
+│   │   └── 6_mean_reversion
+│   ├── book_resources.txt
+│   ├── datasets
+│   │   ├── BTCUSD-1d-1000wks-data.csv
+│   │   ├── BTCUSD-1h-500wks-data.csv
+│   │   └── BTCUSD-6h-500wks-data.csv
+│   ├── day 2 projects
+│   │   ├── data-streams
+│   │   └── productivity_app
+│   ├── historical-data-source.py
+│   ├── HyperLiquid-Trading-Bots - Members only
+│   │   ├── arb.py
+│   │   ├── nice_funcs.py
+│   │   └── README.md
+│   ├── nice_funcs.py
+│   └── Open-AI-Assistants for Bootcamp Members Only
+│       ├── ai15_onefile_save.py
+│       ├── ai_data_guy.py
+│       ├── ai_trader2.py
+│       ├── ai_trader3.py
+│       ├── ai_trader4.py
+│       ├── ai_trader5.py
+│       ├── ai_trader6.py
+│       ├── ai_trader.py
+│       ├── Bitcoin_Trading_Strategy.py
+│       ├── bt_code
+│       ├── BTC-USD-15m-2022-1-01.csv
+│       ├── BTC-USD-15m-2023-1-01T00_00 (1).csv
+│       ├── ETH-USD-15m-2021-1-01T00_00.csv
+│       ├── ids
+│       ├── README.md
+│       ├── sample2.mp3
+│       ├── strategies
+│       ├── strat_ideas.txt
+│       ├── tts.py
+│       └── upload_files.py
+├── ATC Bootcamp Code 2025.zip
+├── backups
+├── bonus_algos
+│   ├── 1_turtle_trending_algo
+│   │   ├── 1_turtle_algo.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 2_correlation_algo
+│   │   ├── 2_correlation.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 3_consolidation_pop_algo
+│   │   ├── 3_consolidation_pop_algo.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 4_nadarya_watson_algo
+│   │   ├── bot.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 5_market_maker
+│   │   ├── market-maker.py
+│   │   └── xconfig.py
+│   └── 6_mean_reversion
+│       └── 74_tickers_mean_reversion.py
+├── Bonus_algos_6ofthem
+│   ├── 1_turtle_trending_algo
+│   │   ├── 1_turtle_algo.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 2_correlation_algo
+│   │   ├── 2_correlation.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 3_consolidation_pop_algo
+│   │   ├── 3_consolidation_pop_algo.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 4_nadarya_watson_algo
+│   │   ├── bot.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 5_market_maker
+│   │   ├── market-maker.py
+│   │   └── xconfig.py
+│   └── 6_mean_reversion
+│       └── 74_tickers_mean_reversion.py
+├── book_resources.txt
+├── claude_code_zai_env.sh
+├── config.example.json
+├── config_keys.py.example
+├── datasets
+│   ├── BTCUSD-1d-1000wks-data.csv
+│   ├── BTCUSD-1h-500wks-data.csv
+│   └── BTCUSD-6h-500wks-data.csv
+├── day 2 projects
+│   ├── data-streams
+│   │   ├── big_liqs.py
+│   │   ├── binance_bigliqs.csv
+│   │   ├── binance.csv
+│   │   ├── binance_trades.csv
+│   │   ├── funding.py
+│   │   ├── huge_trades.py
+│   │   ├── liqs.py
+│   │   └── recent_trades.py
+│   └── productivity_app
+│       ├── productivity.py
+│       └── tasks.json
+├── docs
+│   ├── api-integration-patterns.md
+│   ├── ARCHITECTURE_SUMMARY.md
+│   ├── configuration-management.md
+│   ├── database-logging-architecture.md
+│   ├── deployment-infrastructure.md
+│   ├── deployment_readiness_checklist.md
+│   ├── fail-safe-circuit-breakers.md
+│   ├── monitoring-alerting-system.md
+│   ├── README.md
+│   ├── risk-management-system.md
+│   ├── security-architecture.md
+│   ├── SECURITY_MANAGEMENT.md
+│   └── system-architecture.md
+├── examples
+│   └── security-system-usage.js
+├── files.txt
+├── historical-data-source.py
+├── HyperLiquid-Trading-Bots - Members only
+│   ├── arb.py
+│   ├── nice_funcs.py
+│   └── README.md
+├── live_micro_trader.py
+├── main.py
+├── micro_trader.py
+├── nice_funcs.py
+├── Open-AI-Assistants for Bootcamp Members Only
+│   ├── ai15_onefile_save.py
+│   ├── ai_data_guy.py
+│   ├── ai_trader2.py
+│   ├── ai_trader3.py
+│   ├── ai_trader4.py
+│   ├── ai_trader5.py
+│   ├── ai_trader6.py
+│   ├── ai_trader.py
+│   ├── Bitcoin_Trading_Strategy.py
+│   ├── bt_code
+│   │   ├── bt_adx_f5a90afc27_11-22-09-20.py
+│   │   ├── bt_bollinger bands_ceba73dd24_11-22-09-23.py
+│   │   ├── bt_elliot waves_45be5eb7c4_11-22-09-17.py
+│   │   ├── bt_elliot waves + pivot lines_69b9949f7e_11-22-09-22.py
+│   │   ├── bt_ema + bollinger_8c2746006f_11-22-09-11.py
+│   │   ├── bt_grid trading + fibonacci_fe9dbf977c_11-22-09-27.py
+│   │   ├── bt_ichimoku_957ce50ef1_11-22-09-16.py
+│   │   ├── bt_macd_47e847ce2f_11-22-09-19.py
+│   │   ├── bt_pivot lines_dba8e14233_11-22-09-12.py
+│   │   ├── bt_quarter theory_8926419de0_11-22-09-14.py
+│   │   ├── bt_rsi + vwap_ba810bdf8c_11-22-09-09.py
+│   │   └── bt_sma + adx crossovers + bolinger band contraction + volume_7280f19fc4_11-22-09-25.py
+│   ├── BTC-USD-15m-2022-1-01.csv
+│   ├── BTC-USD-15m-2023-1-01T00_00 (1).csv
+│   ├── ETH-USD-15m-2021-1-01T00_00.csv
+│   ├── ids
+│   │   └── test.txt
+│   ├── README.md
+│   ├── sample2.mp3
+│   ├── strategies
+│   │   ├── ideas.txt
+│   │   ├── strategy_110addc15f_11-22-09-26.txt
+│   │   ├── strategy_213ae77a75_11-22-09-24.txt
+│   │   ├── strategy_5fdc6e3dec_11-22-09-17.txt
+│   │   ├── strategy_6444321bd9_11-22-09-20.txt
+│   │   ├── strategy_8cb9ad7f8e_11-22-09-21.txt
+│   │   ├── strategy_b49b49ef5d_11-22-09-15.txt
+│   │   ├── strategy_d1aced4a63_11-22-09-18.txt
+│   │   ├── strategy_d9dfac5aa6_11-22-09-10.txt
+│   │   ├── strategy_e3afeb7cd3_11-22-09-08.txt
+│   │   ├── strategy_ec3f416235_11-22-09-13.txt
+│   │   ├── strategy_f1d9816ac1_11-22-09-23.txt
+│   │   └── strategy_f6346a3425_11-22-09-12.txt
+│   ├── strat_ideas.txt
+│   ├── tts.py
+│   └── upload_files.py
+├── README.md
+├── README_TRADING.md
+├── requirements.txt
+├── scripts
+│   ├── deploy.sh
+│   └── setup.sh
+├── setup_real_trading.py
+├── solana_sniper
+│   └── solana-sniper-2025-main
+│       ├── config.py
+│       ├── data
+│       ├── dontshare.example.py
+│       ├── get_new_tokens.py
+│       ├── main.py
+│       ├── nice_funcs.py
+│       └── README.md
+├── solana-sniper-2025-429.zip
+├── solana-sniper-2025-main
+│   ├── config.py
+│   ├── data
+│   │   ├── all_new_tokens.csv
+│   │   ├── closed_positions.txt
+│   │   ├── final-sorted.csv
+│   │   ├── hyper-sorted-sol.csv
+│   │   ├── permanent_blacklist.txt
+│   │   ├── ready_to_buy.csv
+│   │   └── token_per_addy.csv
+│   ├── dontshare.example.py
+│   ├── get_new_tokens.py
+│   ├── main.py
+│   ├── nice_funcs.py
+│   └── README.md
+├── src
+│   ├── 1_turtle_trending_algo
+│   │   ├── 1_turtle_algo.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 2_correlation_algo
+│   │   ├── 2_correlation.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 3_consolidation_pop_algo
+│   │   ├── 3_consolidation_pop_algo.py
+│   │   ├── config_ex.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 4_nadarya_watson_algo
+│   │   ├── bot.py
+│   │   ├── config.py
+│   │   └── functions.py
+│   ├── 5_market_maker
+│   │   ├── market-maker.py
+│   │   └── xconfig.py
+│   ├── 6_mean_reversion
+│   │   └── 74_tickers_mean_reversion.py
+│   ├── atc_bootcamp
+│   │   ├── 10_day10_bots
+│   │   ├── 11_day11_bots
+│   │   ├── 12_day12_bots
+│   │   ├── 13_backtesting.py
+│   │   ├── 2.1-anaconda-pip-vsc.py
+│   │   ├── 2_coding_basics.py
+│   │   ├── 4-algo_orders.py
+│   │   ├── 5_risk
+│   │   ├── 6_sma.py
+│   │   ├── 7_rsi.py
+│   │   ├── 8_vwap.py
+│   │   ├── 9_more_indicators
+│   │   ├── Bonus_algos_6ofthem
+│   │   ├── book_resources.txt
+│   │   ├── datasets
+│   │   ├── day 2 projects
+│   │   ├── historical-data-source.py
+│   │   ├── HyperLiquid-Trading-Bots - Members only
+│   │   ├── nice_funcs.py
+│   │   └── Open-AI-Assistants for Bootcamp Members Only
+│   ├── config
+│   │   └── trading_config.json
+│   ├── docs
+│   │   └── PERFORMANCE_OPTIMIZATION_REPORT.md
+│   ├── engine
+│   │   └── trading_engine.py
+│   ├── ml
+│   │   └── trading_ml_optimizer.py
+│   ├── monitoring
+│   │   ├── alert_system.py
+│   │   ├── DeploymentAuditor.js
+│   │   ├── performance_monitor.py
+│   │   └── SecurityMonitor.js
+│   ├── optimization
+│   │   ├── DEPLOYMENT_GUIDE.md
+│   │   ├── optimized_api_manager.py
+│   │   ├── optimized_correlation_algorithm.py
+│   │   ├── optimized_market_maker.py
+│   │   └── performance_benchmark.py
+│   ├── security
+│   │   ├── CodeReviewSystem.js
+│   │   ├── KeyManager.js
+│   │   ├── SecurityHub.js
+│   │   ├── SecurityManager.js
+│   │   └── VulnerabilityScanner.js
+│   ├── solana-sniper-2025-main
+│   │   ├── config.py
+│   │   ├── data
+│   │   ├── dontshare.example.py
+│   │   ├── get_new_tokens.py
+│   │   ├── main.py
+│   │   ├── nice_funcs.py
+│   │   └── README.md
+│   ├── strategies
+│   │   ├── arbitrage.py
+│   │   ├── correlation_trading.py
+│   │   ├── market_maker.py
+│   │   ├── mean_reversion.py
+│   │   ├── StrategyValidator.js
+│   │   └── turtle_trading.py
+│   ├── testing
+│   │   ├── test_framework.py
+│   │   └── TestSuite.js
+│   └── utils
+│       └── hyperliquid_client.py
+├── temp
+│   ├── atc
+│   │   ├── 10_day10_bots
+│   │   ├── 11_day11_bots
+│   │   ├── 12_day12_bots
+│   │   ├── 13_backtesting.py
+│   │   ├── 2.1-anaconda-pip-vsc.py
+│   │   ├── 2_coding_basics.py
+│   │   ├── 4-algo_orders.py
+│   │   ├── 5_risk
+│   │   ├── 6_sma.py
+│   │   ├── 7_rsi.py
+│   │   ├── 8_vwap.py
+│   │   ├── 9_more_indicators
+│   │   ├── Bonus_algos_6ofthem
+│   │   ├── book_resources.txt
+│   │   ├── datasets
+│   │   ├── day 2 projects
+│   │   ├── historical-data-source.py
+│   │   ├── HyperLiquid-Trading-Bots - Members only
+│   │   ├── nice_funcs.py
+│   │   └── Open-AI-Assistants for Bootcamp Members Only
+│   ├── bonus_algos
+│   │   ├── 1_turtle_trending_algo
+│   │   ├── 2_correlation_algo
+│   │   ├── 3_consolidation_pop_algo
+│   │   ├── 4_nadarya_watson_algo
+│   │   ├── 5_market_maker
+│   │   └── 6_mean_reversion
+│   └── solana
+│       └── solana-sniper-2025-main
+├── tests
+│   ├── integration
+│   │   └── test_exchange_apis.py
+│   ├── README.md
+│   ├── run_all_tests.py
+│   ├── stress
+│   │   └── test_market_scenarios.py
+│   └── unit
+│       └── test_trading_strategies.py
+└── trading_env
+    ├── bin
+    │   ├── activate
+    │   ├── activate.csh
+    │   ├── activate.fish
+    │   ├── Activate.ps1
+    │   ├── f2py
+    │   ├── normalizer
+    │   ├── numpy-config
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.13
+    │   ├── python -> python3
+    │   ├── python3 -> /usr/bin/python3
+    │   └── python3.13 -> python3
+    ├── include
+    │   └── python3.13
+    ├── lib
+    │   └── python3.13
+    ├── lib64 -> lib
+    └── pyvenv.cfg
+
+134 directories, 319 files

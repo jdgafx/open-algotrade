@@ -1,0 +1,11 @@
+{
+  "project_name": "moondev-algotrade",
+  "project_type": "monorepo",
+  "services": {
+    "web": {
+      "path": "./ultimate-trading-platform",
+      "language": "javascript",
+      "framework": "vanilla"
+    }
+  }
+}

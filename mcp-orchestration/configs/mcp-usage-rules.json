@@ -1,0 +1,118 @@
+{
+  "mcp_server_selection_rules": {
+    "auto_selection_enabled": true,
+    "fallback_enabled": true,
+    "max_alternatives": 3,
+    "confidence_threshold": 0.7
+  },
+  "task_patterns": {
+    "agent_coordination": {
+      "keywords": ["coordinate", "agent", "swarm", "orchestrate", "sparc", "batch"],
+      "primary_mcp": "claude-flow",
+      "secondary_mcp": ["ruv-swarm", "flow-nexus"],
+      "confidence": 0.95
+    },
+    "neural_training": {
+      "keywords": ["train", "neural", "ai", "model", "learn", "pattern"],
+      "primary_mcp": "flow-nexus",
+      "secondary_mcp": ["ruv-swarm", "claude-flow"],
+      "confidence": 0.9
+    },
+    "research": {
+      "keywords": ["research", "search", "find", "lookup", "investigate", "gather"],
+      "primary_mcp": "web-search-prime",
+      "secondary_mcp": ["context7", "claude-flow"],
+      "confidence": 0.9
+    },
+    "file_operations": {
+      "keywords": ["file", "read", "write", "edit", "create", "modify"],
+      "primary_mcp": "filesystem",
+      "secondary_mcp": ["claude-flow", "flow-nexus"],
+      "confidence": 0.95
+    },
+    "web_automation": {
+      "keywords": ["web", "browser", "navigate", "click", "scrape", "test"],
+      "primary_mcp": "browser",
+      "secondary_mcp": ["zapier", "flow-nexus"],
+      "confidence": 0.9
+    },
+    "visual_analysis": {
+      "keywords": ["image", "visual", "screenshot", "analyze", "see", "view"],
+      "primary_mcp": "zai-mcp-server",
+      "secondary_mcp": ["browser", "filesystem"],
+      "confidence": 0.95
+    },
+    "documentation": {
+      "keywords": ["document", "doc", "guide", "readme", "explain"],
+      "primary_mcp": "context7",
+      "secondary_mcp": ["notion", "filesystem"],
+      "confidence": 0.85
+    },
+    "complex_analysis": {
+      "keywords": ["analyze", "think", "complex", "step", "sequence", "plan"],
+      "primary_mcp": "sequential-thinking",
+      "secondary_mcp": ["claude-flow", "ruv-swarm"],
+      "confidence": 0.9
+    },
+    "cloud_execution": {
+      "keywords": ["cloud", "deploy", "sandbox", "execute", "run"],
+      "primary_mcp": "flow-nexus",
+      "secondary_mcp": [],
+      "confidence": 0.95
+    },
+    "workflow_automation": {
+      "keywords": ["automate", "workflow", "zap", "integrate", "sync"],
+      "primary_mcp": "zapier",
+      "secondary_mcp": ["flow-nexus"],
+      "confidence": 0.85
+    }
+  },
+  "mcp_server_priorities": {
+    "claude-flow": 1,
+    "ruv-swarm": 2,
+    "flow-nexus": 3,
+    "filesystem": 4,
+    "web-search-prime": 5,
+    "browser": 6,
+    "zai-mcp-server": 7,
+    "sequential-thinking": 8,
+    "context7": 9,
+    "notion": 10,
+    "zapier": 11
+  },
+  "orchestration_patterns": {
+    "simple_task": {
+      "steps": 1,
+      "primary_only": true
+    },
+    "complex_task": {
+      "steps": 3,
+      "use_coordination": true,
+      "fallback_enabled": true
+    },
+    "research_task": {
+      "steps": 2,
+      "parallel_search": true,
+      "synthesize_results": true
+    },
+    "development_task": {
+      "steps": 5,
+      "use_sparc": true,
+      "test_enabled": true,
+      "review_enabled": true
+    }
+  },
+  "automatic_responses": {
+    "should_we_use_mcp": "Auto-selected best MCP server based on task analysis",
+    "no_mcp_activity": "MCP servers are actively running in background - check usage metrics",
+    "task_too_complex": "Initiating multi-MCP coordination with claude-flow and ruv-swarm",
+    "cloud_needed": "Routing to flow-nexus for cloud execution",
+    "research_required": "Engaging web-search-prime and context7 for comprehensive research"
+  },
+  "usage_optimization": {
+    "monitor_interval": "1h",
+    "auto_balance": true,
+    "learn_from_patterns": true,
+    "track_success_rate": true
+  }
+}

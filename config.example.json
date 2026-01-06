@@ -1,0 +1,59 @@
+{
+  "hyperliquid_api_key": "your_hyperliquid_api_key_here",
+  "hyperliquid_secret_key": "your_hyperliquid_secret_key_here",
+  "sandbox_mode": true,
+  "max_portfolio_risk": "10000",
+  "max_total_leverage": 10,
+  "daily_loss_limit": "2000",
+  "emergency_stop_enabled": true,
+  "enable_market_making": true,
+  "enable_turtle_trading": true,
+  "enable_correlation": true,
+  "enable_mean_reversion": true,
+  "enable_arbitrage": true,
+  "high_frequency_mode": true,
+  "parallel_execution": true,
+  "monitoring_enabled": true,
+  "discord_webhook_url": null,
+  "email_alerts": false,
+  "alert_email_address": null,
+  "strategies": {
+    "market_making": {
+      "symbols": ["ETH", "BTC"],
+      "base_size": "1000",
+      "max_position_size": "10000",
+      "risk_limit": "5000",
+      "spread_percentage": "0.001",
+      "time_limit_minutes": 120
+    },
+    "turtle_trading": {
+      "symbol": "ETH",
+      "timeframe": "5m",
+      "lookback_period": 55,
+      "take_profit_percentage": "0.002",
+      "size": "500"
+    },
+    "correlation": {
+      "leader_symbol": "ETH",
+      "follower_symbols": ["BTC", "SOL", "ADA", "DOT", "MATIC", "AVAX"],
+      "lag_threshold_percentage": "0.5",
+      "size": "1"
+    },
+    "mean_reversion": {
+      "symbols": ["BTC", "ETH", "SOL", "ADA", "DOT", "MATIC"],
+      "entry_threshold_deviation": 2.0,
+      "size_per_position": "200"
+    },
+    "arbitrage": {
+      "min_profit_threshold": "0.001",
+      "execution_speed_ms": 100,
+      "base_size": "1000"
+    }
+  },
+  "risk_management": {
+    "max_drawdown_threshold": 0.15,
+    "position_size_percentage": 0.02,
+    "max_correlation": 0.8,
+    "volatility_threshold": 0.05
+  }
+}

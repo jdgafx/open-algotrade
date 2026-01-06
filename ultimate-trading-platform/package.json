@@ -1,0 +1,78 @@
+{
+  "name": "ultimate-algorithmic-trading-platform",
+  "version": "1.0.0",
+  "description": "Professional-grade algorithmic trading platform with AI-powered strategy optimization",
+  "type": "module",
+  "scripts": {
+    "start": "serve -s . -l 3000",
+    "dev": "live-server --port=3000 --entry-file=index.html",
+    "build": "npm run minify:css && npm run minify:js",
+    "minify:css": "cleancss -o assets/styles.min.css assets/styles.css",
+    "minify:js": "uglifyjs ultimate-trading-app.js -o ultimate-trading-app.min.js && uglifyjs services/*.js -o services/bundle.min.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint *.js services/*.js",
+    "deploy": "npm run build && puter deploy --app-path . --app-name 'Ultimate Trading Platform'",
+    "validate": "npm run lint && npm run test",
+    "serve": "http-server -p 3000 -c-1"
+  },
+  "keywords": [
+    "trading",
+    "algorithmic-trading",
+    "cryptocurrency",
+    "hyperliquid",
+    "websocket",
+    "pwa",
+    "ai",
+    "trading-strategies"
+  ],
+  "author": "Ultimate Trading Platform Team",
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.2",
+    "eslint": "^8.57.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1",
+    "uglify-js": "^3.17.4"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ultimate-trading-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/ultimate-trading-platform/issues"
+  },
+  "homepage": "https://github.com/your-username/ultimate-trading-platform#readme",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "acter": {
+    "name": "Ultimate Trading Platform",
+    "short_name": "TradingBot",
+    "description": "Professional algorithmic trading platform with AI-powered strategies",
+    "url": "./index.html",
+    "icons": [
+      {
+        "src": "assets/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "assets/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+}

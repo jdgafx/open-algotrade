@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Algorithmic Trading Platform</title>
+    <script src="https://cdn.puter.com/puter.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        :root {
+            /* Primary Colors */
+            --primary-500: #2563EB;
+            --primary-400: #3B82F6;
+            --primary-600: #1D4ED8;
+            
+            /* Neutral Colors */
+            --neutral-950: #000000;
+            --neutral-900: rgba(10, 10, 10, 0.7);
+            --neutral-800: #1F2937;
+            --neutral-400: #9CA3AF;
+            --neutral-200: #E5E7EB;
+            
+            /* Semantic Colors */
+            --success-500: #22C55E;
+            --error-500: #EF4444;
+            --warning-500: #F59E0B;
+            
+            /* Spacing */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-xxl: 64px;
+            
+            /* Border Radius */
+            --radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--neutral-950);
+            color: var(--neutral-200);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .glassmorphic {
+            background: var(--neutral-900);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid var(--neutral-800);
+            border-radius: var(--radius);
+        }
+        
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--space-md);
+        }
+        
+        .header {
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--neutral-800);
+            margin-bottom: var(--space-xxl);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--neutral-200);
+        }
+        
+        .nav {
+            display: flex;
+            gap: var(--space-lg);
+        }
+        
+        .nav-item {
+            color: var(--neutral-400);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-item:hover {
+            color: var(--primary-400);
+        }
+        
+        .nav-item.active {
+            color: var(--primary-500);
+        }
+        
+        .btn {
+            padding: 12px var(--space-md);
+            border-radius: var(--radius);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-400);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--success-500);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--error-500);
+            color: white;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .card {
+            padding: var(--space-md);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-400);
+        }
+        
+        .strategy-card {
+            position: relative;
+        }
+        
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .strategy-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--neutral-200);
+        }
+        
+        .strategy-tier {
+            background: var(--primary-600);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .metrics {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-label {
+            color: var(--neutral-400);
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .metric-value.profit {
+            color: var(--success-500);
+        }
+        
+        .metric-value.loss {
+            color: var(--error-500);
+        }
+        
+        .input {
+            width: 100%;
+            height: 48px;
+            padding: 0 var(--space-sm);
+            background: transparent;
+            border: 1px solid var(--neutral-800);
+            border-radius: var(--radius);
+            color: var(--neutral-200);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+        }
+        
+        .tier-card {
+            text-align: center;
+        }
+        
+        .tier-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .tier-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--success-500);
+            margin-bottom: var(--space-md);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .tier-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: var(--space-md);
+        }
+        
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-xs);
+            color: var(--neutral-400);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--neutral-900);
+            backdrop-filter: blur(32px);
+            border: 1px solid var(--neutral-800);
+            border-radius: var(--radius);
+            padding: var(--space-xl);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .chart-container {
+            height: 300px;
+            background: var(--neutral-900);
+            border-radius: var(--radius);
+            border: 1px solid var(--neutral-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-400);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: var(--space-lg);
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 2px solid var(--neutral-800);
+            border-top: 2px solid var(--primary-500);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--space-sm);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .nav {
+                gap: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header glassmorphic">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🚀 Ultimate Trading</div>
+                <nav class="nav">
+                    <a href="#" class="nav-item active" onclick="showSection('dashboard')">Dashboard</a>
+                    <a href="#" class="nav-item" onclick="showSection('strategies')">Strategies</a>
+                    <a href="#" class="nav-item" onclick="showSection('portfolio')">Portfolio</a>
+                    <a href="#" class="nav-item" onclick="showSection('subscription')">Subscription</a>
+                </nav>
+                <button class="btn btn-primary" onclick="connectWallet()">Connect Wallet</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="container">
+        <h1 style="font-size: 38px; font-weight: 700; margin-bottom: var(--space-xl);">Trading Dashboard</h1>
+        
+        <!-- Portfolio Overview -->
+        <div class="grid" style="margin-bottom: var(--space-xxl);">
+            <div class="card glassmorphic">
+                <h3 style="font-size: 16px; font-weight: 500; margin-bottom: var(--space-sm); color: var(--neutral-400);">Total Portfolio Value</h3>
+                <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--success-500);" id="portfolio-value">$0.00</div>
+                <div style="font-size: 16px; font-family: 'JetBrains Mono', monospace; color: var(--success-500);" id="daily-pnl">+$0.00 (0.0%)</div>
+            </div>
+            <div class="card glassmorphic">
+                <h3 style="font-size: 16px; font-weight: 500; margin-bottom: var(--space-sm); color: var(--neutral-400);">Active Strategies</h3>
+                <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace;" id="active-strategies">0</div>
+                <div style="font-size: 16px; color: var(--neutral-400);" id="running-today">Strategies running today</div>
+            </div>
+            <div class="card glassmorphic">
+                <h3 style="font-size: 16px; font-weight: 500; margin-bottom: var(--space-sm); color: var(--neutral-400);">Win Rate</h3>
+                <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace;" id="win-rate">0%</div>
+                <div style="font-size: 16px; color: var(--neutral-400);" id="total-trades">0 trades completed</div>
+            </div>
+            <div class="card glassmorphic">
+                <h3 style="font-size: 16px; font-weight: 500; margin-bottom: var(--space-sm); color: var(--neutral-400);">Sharpe Ratio</h3>
+                <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace;" id="sharpe-ratio">0.00</div>
+                <div style="font-size: 16px; color: var(--neutral-400);">Risk-adjusted returns</div>
+            </div>
+        </div>
+
+        <!-- Active Strategies -->
+        <h2 style="font-size: 24px; font-weight: 600; margin-bottom: var(--space-lg);">Active Strategies</h2>
+        <div class="grid" id="active-strategies-grid">
+            <!-- Strategies will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Strategies Section -->
+    <section id="strategies" class="container" style="display: none;">
+        <h1 style="font-size: 38px; font-weight: 700; margin-bottom: var(--space-xl);">Available Strategies</h1>
+        
+        <!-- Strategy Filters -->
+        <div style="display: flex; gap: var(--space-sm); margin-bottom: var(--space-xl);">
+            <button class="btn btn-primary" onclick="filterStrategies('all')">All Strategies</button>
+            <button class="btn" onclick="filterStrategies('trend')">Trending</button>
+            <button class="btn" onclick="filterStrategies('mean-reversion')">Mean Reversion</button>
+            <button class="btn" onclick="filterStrategies('arbitrage')">Arbitrage</button>
+            <button class="btn" onclick="filterStrategies('market-making')">Market Making</button>
+        </div>
+
+        <div class="grid" id="strategies-grid">
+            <!-- Strategies will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="container" style="display: none;">
+        <h1 style="font-size: 38px; font-weight: 700; margin-bottom: var(--space-xl);">Portfolio Management</h1>
+        
+        <!-- Portfolio Allocation -->
+        <div class="card glassmorphic" style="margin-bottom: var(--space-xl);">
+            <h2 style="font-size: 20px; font-weight: 600; margin-bottom: var(--space-lg);">Portfolio Allocation</h2>
+            <div class="chart-container" id="allocation-chart">
+                <div>Portfolio allocation chart will be displayed here</div>
+            </div>
+        </div>
+
+        <!-- Holdings -->
+        <div class="card glassmorphic">
+            <h2 style="font-size: 20px; font-weight: 600; margin-bottom: var(--space-lg);">Current Holdings</h2>
+            <div id="holdings-list">
+                <!-- Holdings will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
+    <section id="subscription" class="container" style="display: none;">
+        <h1 style="font-size: 38px; font-weight: 700; margin-bottom: var(--space-xl);">Choose Your Trading Tier</h1>
+        
+        <div class="grid" style="margin-bottom: var(--space-xxl);">
+            <div class="card glassmorphic tier-card">
+                <h3 class="tier-name" style="color: var(--neutral-400);">Micro Trader</h3>
+                <div class="tier-price">$0.25+</div>
+                <ul class="tier-features">
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Micro positions ($0.25-$10)</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Basic strategies</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> 1 active strategy</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Real-time data</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Basic risk management</li>
+                </ul>
+                <button class="btn btn-primary" onclick="subscribe('micro')">Start with Micro</button>
+            </div>
+            
+            <div class="card glassmorphic tier-card">
+                <h3 class="tier-name" style="color: var(--primary-500);">Standard</h3>
+                <div class="tier-price">$100+</div>
+                <ul class="tier-features">
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Standard positions ($100-$1K)</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> All basic strategies</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> 5 active strategies</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> AI-powered selection</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Advanced analytics</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Email support</li>
+                </ul>
+                <button class="btn btn-primary" onclick="subscribe('standard')">Choose Standard</button>
+            </div>
+            
+            <div class="card glassmorphic tier-card">
+                <h3 class="tier-name" style="color: var(--warning-500);">Pro</h3>
+                <div class="tier-price">$1,000+</div>
+                <ul class="tier-features">
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Large positions ($1K-$10K)</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> All strategies unlocked</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Unlimited strategies</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Custom strategy builder</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Portfolio optimization</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Priority support</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> API access</li>
+                </ul>
+                <button class="btn btn-primary" onclick="subscribe('pro')">Go Pro</button>
+            </div>
+            
+            <div class="card glassmorphic tier-card">
+                <h3 class="tier-name" style="color: var(--success-500);">Elite</h3>
+                <div class="tier-price">$10,000+</div>
+                <ul class="tier-features">
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Institutional positions ($10K+)</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> White-glove service</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Dedicated account manager</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Custom algorithms</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Direct market access</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> 24/7 support</li>
+                    <li><i data-lucide="check" style="color: var(--success-500);"></i> Institutional risk management</li>
+                </ul>
+                <button class="btn btn-success" onclick="subscribe('elite')">Join Elite</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Configuration Modal -->
+    <div id="strategy-modal" class="modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+                <h2 style="font-size: 20px; font-weight: 600;" id="modal-title">Configure Strategy</h2>
+                <button onclick="closeModal()" style="background: none; border: none; color: var(--neutral-400); cursor: pointer; font-size: 24px;">&times;</button>
+            </div>
+            
+            <div id="modal-content">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <div>Initializing trading algorithms...</div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Global state
+        let currentUser = null;
+        let currentTier = null;
+        let activeStrategies = [];
+        let portfolio = {
+            totalValue: 0,
+            dailyPnL: 0,
+            dailyPnLPercent: 0,
+            strategies: [],
+            holdings: []
+        };
+        
+        // Trading strategies data
+        const strategies = [
+            {
+                id: 'turtle',
+                name: 'Turtle Trading',
+                description: 'Trend-following algorithm that captures breakouts',
+                tier: 'micro',
+                category: 'trend',
+                historical_return: '+18.5%',
+                sharpe_ratio: 1.82,
+                max_drawdown: '-12.3%',
+                win_rate: 68,
+                min_investment: 0.25,
+                risk_level: 'Medium'
+            },
+            {
+                id: 'correlation',
+                name: 'Correlation Trading',
+                description: 'Arbitrage based on asset correlations',
+                tier: 'standard',
+                category: 'arbitrage',
+                historical_return: '+24.2%',
+                sharpe_ratio: 2.15,
+                max_drawdown: '-8.7%',
+                win_rate: 73,
+                min_investment: 100,
+                risk_level: 'Low'
+            },
+            {
+                id: 'mean-reversion',
+                name: 'Mean Reversion',
+                description: '74-ticker mean reversion strategy',
+                tier: 'pro',
+                category: 'mean-reversion',
+                historical_return: '+31.8%',
+                sharpe_ratio: 2.45,
+                max_drawdown: '-15.1%',
+                win_rate: 71,
+                min_investment: 1000,
+                risk_level: 'Medium'
+            },
+            {
+                id: 'market-maker',
+                name: 'Market Maker',
+                description: 'Automated liquidity provision',
+                tier: 'pro',
+                category: 'market-making',
+                historical_return: '+22.1%',
+                sharpe_ratio: 3.12,
+                max_drawdown: '-6.2%',
+                win_rate: 79,
+                min_investment: 1000,
+                risk_level: 'Low'
+            },
+            {
+                id: 'vwap',
+                name: 'VWAP Algorithm',
+                description: 'Volume-weighted average price execution',
+                tier: 'standard',
+                category: 'trend',
+                historical_return: '+19.7%',
+                sharpe_ratio: 1.95,
+                max_drawdown: '-11.4%',
+                win_rate: 65,
+                min_investment: 100,
+                risk_level: 'Medium'
+            },
+            {
+                id: 'rsi',
+                name: 'RSI Strategy',
+                description: 'Oversold/overbought momentum trading',
+                tier: 'micro',
+                category: 'mean-reversion',
+                historical_return: '+16.3%',
+                sharpe_ratio: 1.67,
+                max_drawdown: '-13.8%',
+                win_rate: 62,
+                min_investment: 0.25,
+                risk_level: 'Medium'
+            },
+            {
+                id: 'bollinger',
+                name: 'Bollinger Bands',
+                description: 'Volatility-based entry and exit signals',
+                tier: 'standard',
+                category: 'mean-reversion',
+                historical_return: '+20.9%',
+                sharpe_ratio: 1.88,
+                max_drawdown: '-14.2%',
+                win_rate: 67,
+                min_investment: 100,
+                risk_level: 'Medium'
+            },
+            {
+                id: 'grid-trading',
+                name: 'Grid Trading',
+                description: 'Automated grid-based position management',
+                tier: 'pro',
+                category: 'arbitrage',
+                historical_return: '+26.4%',
+                sharpe_ratio: 2.78,
+                max_drawdown: '-9.6%',
+                win_rate: 75,
+                min_investment: 1000,
+                risk_level: 'Low'
+            }
+        ];
+        
+        // Section navigation
+        function showSection(section) {
+            // Hide all sections
+            const sections = ['dashboard', 'strategies', 'portfolio', 'subscription'];
+            sections.forEach(s => {
+                document.getElementById(s).style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(section).style.display = 'block';
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Load section data
+            if (section === 'dashboard') {
+                loadDashboard();
+            } else if (section === 'strategies') {
+                loadStrategies();
+            } else if (section === 'portfolio') {
+                loadPortfolio();
+            }
+        }
+        
+        // Initialize application
+        async function initializeApp() {
+            showLoading();
+            
+            try {
+                // Initialize Puter.js
+                await puter.auth.isSignedIn();
+                
+                // Load user data
+                await loadUserData();
+                
+                // Initialize portfolio
+                await initializePortfolio();
+                
+                // Load active strategies
+                await loadActiveStrategies();
+                
+                hideLoading();
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                hideLoading();
+            }
+        }
+        
+        // Load dashboard data
+        async function loadDashboard() {
+            // Calculate portfolio metrics
+            const totalValue = portfolio.holdings.reduce((sum, holding) => 
+                sum + (holding.quantity * holding.price), 0
+            );
+            
+            const dailyPnL = portfolio.holdings.reduce((sum, holding) => 
+                sum + (holding.quantity * holding.priceChange), 0
+            );
+            
+            const dailyPnLPercent = totalValue > 0 ? (dailyPnL / totalValue) * 100 : 0;
+            
+            // Update display
+            document.getElementById('portfolio-value').textContent = 
+                new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalValue);
+            
+            const pnlElement = document.getElementById('daily-pnl');
+            pnlElement.textContent = `${dailyPnL >= 0 ? '+' : ''}${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(dailyPnL)} (${dailyPnLPercent.toFixed(2)}%)`;
+            pnlElement.className = dailyPnL >= 0 ? 'profit' : 'loss';
+            
+            document.getElementById('active-strategies').textContent = activeStrategies.length;
+            document.getElementById('win-rate').textContent = calculateWinRate() + '%';
+            document.getElementById('sharpe-ratio').textContent = calculateSharpeRatio().toFixed(2);
+        }
+        
+        // Load strategies
+        function loadStrategies(filter = 'all') {
+            const grid = document.getElementById('strategies-grid');
+            grid.innerHTML = '';
+            
+            const filteredStrategies = filter === 'all' ? 
+                strategies : strategies.filter(s => s.category === filter);
+            
+            filteredStrategies.forEach(strategy => {
+                const card = createStrategyCard(strategy);
+                grid.appendChild(card);
+            });
+        }
+        
+        // Create strategy card
+        function createStrategyCard(strategy) {
+            const card = document.createElement('div');
+            card.className = 'card glassmorphic strategy-card';
+            card.innerHTML = `
+                <div class="strategy-header">
+                    <div class="strategy-title">${strategy.name}</div>
+                    <div class="strategy-tier">${strategy.tier.toUpperCase()}</div>
+                </div>
+                <div style="color: var(--neutral-400); margin-bottom: var(--space-sm);">
+                    ${strategy.description}
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <span class="metric-label">Historical Return</span>
+                        <span class="metric-value profit">${strategy.historical_return}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Sharpe Ratio</span>
+                        <span class="metric-value">${strategy.sharpe_ratio}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Max Drawdown</span>
+                        <span class="metric-value loss">${strategy.max_drawdown}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Win Rate</span>
+                        <span class="metric-value">${strategy.win_rate}%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Risk Level</span>
+                        <span class="metric-value">${strategy.risk_level}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Min Investment</span>
+                        <span class="metric-value">$${strategy.min_investment}</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: var(--space-sm);" 
+                        onclick="configureStrategy('${strategy.id}')">
+                    Configure & Deploy
+                </button>
+            `;
+            return card;
+        }
+        
+        // Filter strategies
+        function filterStrategies(category) {
+            loadStrategies(category);
+            
+            // Update filter buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+            });
+            event.target.classList.add('btn-primary');
+        }
+        
+        // Configure strategy
+        function configureStrategy(strategyId) {
+            const strategy = strategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+            
+            const modal = document.getElementById('strategy-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            
+            modalTitle.textContent = `Configure ${strategy.name}`;
+            modalContent.innerHTML = `
+                <div style="margin-bottom: var(--space-md);">
+                    <label style="display: block; margin-bottom: var(--space-xs); color: var(--neutral-400); font-size: 14px;">
+                        Position Size (USD)
+                    </label>
+                    <input type="number" class="input" id="position-size" 
+                           placeholder="Enter amount (min: $${strategy.min_investment})"
+                           min="${strategy.min_investment}" step="0.01">
+                </div>
+                
+                <div style="margin-bottom: var(--space-md);">
+                    <label style="display: block; margin-bottom: var(--space-xs); color: var(--neutral-400); font-size: 14px;">
+                        Risk Level
+                    </label>
+                    <select class="input" id="risk-level">
+                        <option value="low">Low Risk</option>
+                        <option value="medium" selected>Medium Risk</option>
+                        <option value="high">High Risk</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: var(--space-md);">
+                    <label style="display: block; margin-bottom: var(--space-xs); color: var(--neutral-400); font-size: 14px;">
+                        Stop Loss (%)
+                    </label>
+                    <input type="number" class="input" id="stop-loss" 
+                           placeholder="5.0" step="0.1" min="0.1" max="50">
+                </div>
+                
+                <div style="margin-bottom: var(--space-md);">
+                    <label style="display: block; margin-bottom: var(--space-xs); color: var(--neutral-400); font-size: 14px;">
+                        Take Profit (%)
+                    </label>
+                    <input type="number" class="input" id="take-profit" 
+                           placeholder="10.0" step="0.1" min="0.1" max="100">
+                </div>
+                
+                <div style="display: flex; gap: var(--space-sm);">
+                    <button class="btn" onclick="closeModal()" style="flex: 1;">Cancel</button>
+                    <button class="btn btn-success" onclick="deployStrategy('${strategyId}')" style="flex: 1;">
+                        Deploy Strategy
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('strategy-modal').classList.remove('active');
+        }
+        
+        // Deploy strategy
+        async function deployStrategy(strategyId) {
+            const strategy = strategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+            
+            const positionSize = parseFloat(document.getElementById('position-size').value);
+            const riskLevel = document.getElementById('risk-level').value;
+            const stopLoss = parseFloat(document.getElementById('stop-loss').value) || 5.0;
+            const takeProfit = parseFloat(document.getElementById('take-profit').value) || 10.0;
+            
+            if (positionSize < strategy.min_investment) {
+                alert(`Minimum investment for ${strategy.name} is $${strategy.min_investment}`);
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                // Initialize strategy with Puter.js AI
+                const config = {
+                    strategy: strategyId,
+                    position_size: positionSize,
+                    risk_level: riskLevel,
+                    stop_loss: stopLoss,
+                    take_profit: takeProfit,
+                    hyperliquid_integration: true,
+                    micro_positions: positionSize >= 0.25
+                };
+                
+                // Deploy to Hyperliquid via Puter.js
+                const deployment = await puter.ai.chat('gpt-5-nano', 
+                    `Deploy algorithmic trading strategy with configuration: ${JSON.stringify(config)}`
+                );
+                
+                // Store strategy in active strategies
+                activeStrategies.push({
+                    ...strategy,
+                    config: config,
+                    deployed_at: new Date().toISOString(),
+                    status: 'active',
+                    current_pnl: 0,
+                    daily_pnl: 0
+                });
+                
+                // Save to cloud storage
+                await puter.fs.write(`strategies/${strategyId}_${Date.now()}.json`, JSON.stringify(config));
+                
+                closeModal();
+                loadDashboard();
+                hideLoading();
+                
+                // Show success message
+                await puter.print(`🚀 ${strategy.name} deployed successfully!`);
+                
+            } catch (error) {
+                console.error('Failed to deploy strategy:', error);
+                alert('Failed to deploy strategy. Please try again.');
+                hideLoading();
+            }
+        }
+        
+        // Subscribe to tier
+        async function subscribe(tier) {
+            showLoading();
+            
+            try {
+                // Check authentication
+                if (!await puter.auth.isSignedIn()) {
+                    await puter.auth.signIn();
+                }
+                
+                const tierInfo = {
+                    micro: { price: 0.25, features: ['Basic strategies', '1 active strategy'] },
+                    standard: { price: 100, features: ['All basic strategies', '5 active strategies'] },
+                    pro: { price: 1000, features: ['All strategies', 'Unlimited strategies'] },
+                    elite: { price: 10000, features: ['Everything', 'White-glove service'] }
+                };
+                
+                const selected = tierInfo[tier];
+                
+                // Process subscription via cloud storage
+                await puter.kv.set(`subscription_${puter.auth.getUser().id}`, {
+                    tier: tier,
+                    activated_at: new Date().toISOString(),
+                    features: selected.features,
+                    status: 'active'
+                });
+                
+                currentTier = tier;
+                hideLoading();
+                
+                await puter.print(`🎉 Welcome to ${tier} tier! Your trading algorithms are now active.`);
+                
+                // Redirect to strategies
+                showSection('strategies');
+                
+            } catch (error) {
+                console.error('Failed to subscribe:', error);
+                alert('Failed to process subscription. Please try again.');
+                hideLoading();
+            }
+        }
+        
+        // Connect wallet
+        async function connectWallet() {
+            try {
+                if (!await puter.auth.isSignedIn()) {
+                    await puter.auth.signIn();
+                    currentUser = await puter.auth.getUser();
+                    await puter.print(`🔗 Connected wallet: ${currentUser.username}`);
+                } else {
+                    currentUser = await puter.auth.getUser();
+                    await puter.print(`✅ Already connected as ${currentUser.username}`);
+                }
+            } catch (error) {
+                console.error('Failed to connect wallet:', error);
+                alert('Failed to connect wallet. Please try again.');
+            }
+        }
+        
+        // Load portfolio data
+        async function loadPortfolio() {
+            // Generate sample holdings for demo
+            portfolio.holdings = [
+                { symbol: 'BTC-USD', quantity: 0.5, price: 45000, priceChange: 1250, value: 22500 },
+                { symbol: 'ETH-USD', quantity: 2.5, price: 3200, priceChange: -85, value: 8000 },
+                { symbol: 'SOL-USD', quantity: 50, price: 95, priceChange: 3.5, value: 4750 },
+                { symbol: 'AVAX-USD', quantity: 25, price: 38, priceChange: -1.2, value: 950 }
+            ];
+            
+            // Update holdings display
+            const holdingsList = document.getElementById('holdings-list');
+            holdingsList.innerHTML = portfolio.holdings.map(holding => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) 0; border-bottom: 1px solid var(--neutral-800);">
+                    <div>
+                        <div style="font-weight: 600; color: var(--neutral-200);">${holding.symbol}</div>
+                        <div style="font-size: 14px; color: var(--neutral-400);">${holding.quantity} units</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 500;">
+                            ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(holding.value)}
+                        </div>
+                        <div style="font-size: 14px; color: ${holding.priceChange >= 0 ? 'var(--success-500)' : 'var(--error-500)'};">
+                            ${holding.priceChange >= 0 ? '+' : ''}${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(holding.priceChange)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Calculate win rate
+        function calculateWinRate() {
+            // Mock calculation - in real app this would come from trading history
+            return Math.floor(Math.random() * 20) + 60; // 60-80%
+        }
+        
+        // Calculate Sharpe ratio
+        function calculateSharpeRatio() {
+            // Mock calculation - in real app this would be calculated from returns
+            return Math.random() * 2 + 1; // 1-3
+        }
+        
+        // Load active strategies
+        async function loadActiveStrategies() {
+            const grid = document.getElementById('active-strategies-grid');
+            grid.innerHTML = '';
+            
+            if (activeStrategies.length === 0) {
+                grid.innerHTML = `
+                    <div class="card glassmorphic" style="text-align: center; padding: var(--space-xl);">
+                        <div style="font-size: 48px; margin-bottom: var(--space-sm);">🚀</div>
+                        <div style="font-size: 18px; font-weight: 600; margin-bottom: var(--space-xs);">
+                            No Active Strategies
+                        </div>
+                        <div style="color: var(--neutral-400); margin-bottom: var(--space-md);">
+                            Deploy your first algorithmic trading strategy to start earning profits automatically.
+                        </div>
+                        <button class="btn btn-primary" onclick="showSection('strategies')">
+                            Browse Strategies
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            activeStrategies.forEach(strategy => {
+                const card = document.createElement('div');
+                card.className = 'card glassmorphic strategy-card';
+                card.innerHTML = `
+                    <div class="strategy-header">
+                        <div class="strategy-title">${strategy.name}</div>
+                        <div class="strategy-tier">${strategy.config?.risk_level?.toUpperCase() || 'ACTIVE'}</div>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric">
+                            <span class="metric-label">Position Size</span>
+                            <span class="metric-value">$${strategy.config?.position_size || 0}</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Current P&L</span>
+                            <span class="metric-value ${strategy.current_pnl >= 0 ? 'profit' : 'loss'}">
+                                $${strategy.current_pnl.toFixed(2)}
+                            </span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">ROI</span>
+                            <span class="metric-value ${strategy.roi >= 0 ? 'profit' : 'loss'}">
+                                ${strategy.roi || 0}%
+                            </span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Status</span>
+                            <span class="metric-value" style="color: var(--success-500);">
+                                ${strategy.status || 'Active'}
+                            </span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: var(--space-xs); margin-top: var(--space-sm);">
+                        <button class="btn btn-danger" style="flex: 1;" onclick="stopStrategy('${strategy.id}')">
+                            Stop
+                        </button>
+                        <button class="btn btn-primary" style="flex: 1;" onclick="viewStrategy('${strategy.id}')">
+                            Details
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // Stop strategy
+        function stopStrategy(strategyId) {
+            if (confirm('Are you sure you want to stop this strategy?')) {
+                activeStrategies = activeStrategies.filter(s => s.id !== strategyId);
+                loadActiveStrategies();
+                loadDashboard();
+            }
+        }
+        
+        // View strategy details
+        function viewStrategy(strategyId) {
+            const strategy = activeStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+            
+            alert(`Strategy Details:\n\nName: ${strategy.name}\nPosition: $${strategy.config?.position_size}\nRisk: ${strategy.config?.risk_level}\nStop Loss: ${strategy.config?.stop_loss}%\nTake Profit: ${strategy.config?.take_profit}%`);
+        }
+        
+        // Load user data
+        async function loadUserData() {
+            try {
+                if (await puter.auth.isSignedIn()) {
+                    currentUser = await puter.auth.getUser();
+                    const subscription = await puter.kv.get(`subscription_${currentUser.id}`);
+                    if (subscription) {
+                        currentTier = subscription.tier;
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+            }
+        }
+        
+        // Initialize portfolio
+        async function initializePortfolio() {
+            try {
+                // Load portfolio from cloud storage
+                const savedPortfolio = await puter.kv.get(`portfolio_${puter.auth.getUser().id}`);
+                if (savedPortfolio) {
+                    portfolio = { ...portfolio, ...savedPortfolio };
+                } else {
+                    // Initialize with demo data
+                    portfolio.totalValue = 1000;
+                    portfolio.dailyPnL = 47.50;
+                    portfolio.dailyPnLPercent = 4.75;
+                }
+            } catch (error) {
+                console.error('Failed to initialize portfolio:', error);
+            }
+        }
+        
+        // Show/hide loading
+        function showLoading() {
+            document.getElementById('loading').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('active');
+        }
+        
+        // Initialize app on load
+        window.addEventListener('load', initializeApp);
+        
+        // Real-time updates (simulated)
+        setInterval(async () => {
+            if (activeStrategies.length > 0) {
+                // Simulate real-time P&L updates
+                activeStrategies.forEach(strategy => {
+                    strategy.current_pnl += (Math.random() - 0.5) * 10; // Random change
+                    strategy.roi = ((strategy.current_pnl / strategy.config?.position_size || 100) * 100).toFixed(2);
+                });
+                
+                loadDashboard();
+                loadActiveStrategies();
+            }
+        }, 5000); // Update every 5 seconds
+        
+    </script>
+</body>
+</html>

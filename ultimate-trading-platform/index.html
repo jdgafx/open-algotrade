@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Trading Platform</title>
+    <link rel="stylesheet" href="trading-theme.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M20 5L30 15L20 25L10 15L20 5Z" fill="url(#gradient1)"/>
+                        <path d="M20 15L25 20L20 25L15 20L20 15Z" fill="url(#gradient2)"/>
+                        <defs>
+                            <linearGradient id="gradient1" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00bfff;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="gradient2" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" style="stop-color:#00bfff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff4466;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">AlgoTrade Pro</span>
+                </div>
+            </div>
+
+            <nav class="header-nav">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="#" class="nav-link">Strategies</a>
+                <a href="#" class="nav-link">Portfolio</a>
+                <a href="#" class="nav-link">Analytics</a>
+            </nav>
+
+            <div class="header-actions">
+                <div class="subscription-badge">
+                    <span class="badge-label">Pro Tier</span>
+                    <span class="badge-tier">Premium</span>
+                </div>
+                <div class="user-auth">
+                    <div class="user-avatar">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="12" r="6" fill="rgba(255,255,255,0.3)"/>
+                            <path d="M6 28c0-5.5 4.5-10 10-10s10 4.5 10 10" fill="rgba(255,255,255,0.3)"/>
+                        </svg>
+                    </div>
+                    <div class="auth-status online">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="main-dashboard">
+        <div class="dashboard-grid">
+            <!-- Portfolio Overview -->
+            <section class="glass-panel portfolio-overview">
+                <div class="panel-header">
+                    <h2 class="panel-title">Portfolio Overview</h2>
+                    <button class="refresh-btn" aria-label="Refresh portfolio">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3v3m0 10v3m9-9h-3m-12 0H3m4.5-5.5L5 5m10 10l-2.5-2.5M5 15l2.5-2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="portfolio-stats">
+                    <div class="stat-item primary">
+                        <div class="stat-label">Total Value</div>
+                        <div class="stat-value">$127,450.32</div>
+                        <div class="stat-change positive">+5.42% <span class="period">24h</span></div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Daily P&L</div>
+                        <div class="stat-value positive">+$2,847.50</div>
+                        <div class="stat-change positive">+2.28%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Active Positions</div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-change neutral">8 Assets</div>
+                    </div>
+                </div>
+                <div class="asset-breakdown">
+                    <div class="asset-item">
+                        <span class="asset-name">BTC/USD</span>
+                        <span class="asset-allocation">45%</span>
+                        <span class="asset-value">$57,352</span>
+                    </div>
+                    <div class="asset-item">
+                        <span class="asset-name">ETH/USD</span>
+                        <span class="asset-allocation">30%</span>
+                        <span class="asset-value">$38,235</span>
+                    </div>
+                    <div class="asset-item">
+                        <span class="asset-name">SOL/USD</span>
+                        <span class="asset-allocation">15%</span>
+                        <span class="asset-value">$19,118</span>
+                    </div>
+                    <div class="asset-item">
+                        <span class="asset-name">Other</span>
+                        <span class="asset-allocation">10%</span>
+                        <span class="asset-value">$12,745</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Strategies -->
+            <section class="glass-panel active-strategies">
+                <div class="panel-header">
+                    <h2 class="panel-title">Active Strategies</h2>
+                    <button class="btn-secondary">View All</button>
+                </div>
+                <div class="strategy-list">
+                    <div class="strategy-card active">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 12h4l3 8 4-16 3 8h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="strategy-info">
+                                <h3 class="strategy-name">Momentum Scalper v2.1</h3>
+                                <span class="strategy-status running">Running</span>
+                            </div>
+                        </div>
+                        <div class="strategy-metrics">
+                            <div class="metric">
+                                <span class="metric-label">ROI</span>
+                                <span class="metric-value positive">+23.7%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Trades</span>
+                                <span class="metric-value">147</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Win Rate</span>
+                                <span class="metric-value">68.4%</span>
+                            </div>
+                        </div>
+                        <div class="strategy-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 68%"></div>
+                            </div>
+                            <span class="progress-label">68% accuracy</span>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card active">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="strategy-info">
+                                <h3 class="strategy-name">Mean Reversion AI</h3>
+                                <span class="strategy-status running">Running</span>
+                            </div>
+                        </div>
+                        <div class="strategy-metrics">
+                            <div class="metric">
+                                <span class="metric-label">ROI</span>
+                                <span class="metric-value positive">+18.2%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Trades</span>
+                                <span class="metric-value">89</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Win Rate</span>
+                                <span class="metric-value">72.1%</span>
+                            </div>
+                        </div>
+                        <div class="strategy-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 72%"></div>
+                            </div>
+                            <span class="progress-label">72% accuracy</span>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card paused">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <rect x="6" y="4" width="12" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="strategy-info">
+                                <h3 class="strategy-name">Grid Arbitrage Bot</h3>
+                                <span class="strategy-status paused">Paused</span>
+                            </div>
+                        </div>
+                        <div class="strategy-metrics">
+                            <div class="metric">
+                                <span class="metric-label">ROI</span>
+                                <span class="metric-value">+12.5%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Trades</span>
+                                <span class="metric-value">234</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Win Rate</span>
+                                <span class="metric-value">65.8%</span>
+                            </div>
+                        </div>
+                        <div class="strategy-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 66%"></div>
+                            </div>
+                            <span class="progress-label">66% accuracy</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Trades -->
+            <section class="glass-panel recent-trades">
+                <div class="panel-header">
+                    <h2 class="panel-title">Recent Trades</h2>
+                    <div class="filter-tabs">
+                        <button class="tab active">All</button>
+                        <button class="tab">Wins</button>
+                        <button class="tab">Losses</button>
+                    </div>
+                </div>
+                <div class="trades-list">
+                    <div class="trade-item">
+                        <div class="trade-icon buy">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M4 8h8M8 4v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="trade-info">
+                            <div class="trade-pair">BTC/USD</div>
+                            <div class="trade-time">2 min ago</div>
+                        </div>
+                        <div class="trade-details">
+                            <div class="trade-amount">0.5 BTC</div>
+                            <div class="trade-price">$43,250</div>
+                        </div>
+                        <div class="trade-result positive">+$245.30</div>
+                    </div>
+
+                    <div class="trade-item">
+                        <div class="trade-icon sell">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 4v8M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="trade-info">
+                            <div class="trade-pair">ETH/USD</div>
+                            <div class="trade-time">5 min ago</div>
+                        </div>
+                        <div class="trade-details">
+                            <div class="trade-amount">2.3 ETH</div>
+                            <div class="trade-price">$2,450</div>
+                        </div>
+                        <div class="trade-result positive">+$89.12</div>
+                    </div>
+
+                    <div class="trade-item">
+                        <div class="trade-icon buy">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M4 8h8M8 4v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="trade-info">
+                            <div class="trade-pair">SOL/USD</div>
+                            <div class="trade-time">8 min ago</div>
+                        </div>
+                        <div class="trade-details">
+                            <div class="trade-amount">15 SOL</div>
+                            <div class="trade-price">$98.50</div>
+                        </div>
+                        <div class="trade-result negative">-$12.45</div>
+                    </div>
+
+                    <div class="trade-item">
+                        <div class="trade-icon sell">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 4v8M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="trade-info">
+                            <div class="trade-pair">BTC/USD</div>
+                            <div class="trade-time">12 min ago</div>
+                        </div>
+                        <div class="trade-details">
+                            <div class="trade-amount">0.25 BTC</div>
+                            <div class="trade-price">$43,180</div>
+                        </div>
+                        <div class="trade-result positive">+$156.78</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Container -->
+            <section class="glass-panel chart-container full-width">
+                <div class="panel-header">
+                    <h2 class="panel-title">Market Analysis</h2>
+                    <div class="chart-controls">
+                        <button class="btn-secondary">1H</button>
+                        <button class="btn-secondary">4H</button>
+                        <button class="btn-secondary active">1D</button>
+                        <button class="btn-secondary">1W</button>
+                        <button class="btn-secondary">1M</button>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="chart-content">
+                        <svg width="100%" height="100%" viewBox="0 0 800 400">
+                            <!-- Grid lines -->
+                            <defs>
+                                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                </pattern>
+                            </defs>
+                            <rect width="800" height="400" fill="url(#grid)"/>
+
+                            <!-- Price line chart -->
+                            <polyline points="0,320 80,280 160,300 240,250 320,270 400,220 480,240 560,200 640,180 720,220 800,160"
+                                      fill="none" stroke="url(#lineGradient)" stroke-width="2"/>
+
+                            <!-- Area under line -->
+                            <polygon points="0,320 80,280 160,300 240,250 320,270 400,220 480,240 560,200 640,180 720,220 800,160 800,400 0,400"
+                                     fill="url(#areaGradient)" opacity="0.2"/>
+
+                            <!-- Buy/Sell markers -->
+                            <circle cx="240" cy="250" r="4" fill="#00ff88"/>
+                            <circle cx="400" cy="220" r="4" fill="#ff4466"/>
+                            <circle cx="640" cy="180" r="4" fill="#00ff88"/>
+
+                            <defs>
+                                <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#00bfff;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" style="stop-color:#00ff88;stop-opacity:0.5" />
+                                    <stop offset="100%" style="stop-color:#00ff88;stop-opacity:0" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="chart-overlay">
+                            <div class="chart-info">
+                                <div class="current-price">
+                                    <span class="label">BTC/USD</span>
+                                    <span class="price">$43,250.00</span>
+                                    <span class="change positive">+2.45%</span>
+                                </div>
+                                <div class="chart-legend">
+                                    <span class="legend-item">
+                                        <span class="legend-color" style="background: #00ff88;"></span>
+                                        Price
+                                    </span>
+                                    <span class="legend-item">
+                                        <span class="legend-color" style="background: #00bfff;"></span>
+                                        Volume
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Trade Panel -->
+            <section class="glass-panel quick-trade">
+                <div class="panel-header">
+                    <h2 class="panel-title">Quick Trade</h2>
+                    <div class="trade-mode-toggle">
+                        <button class="toggle-btn active">Buy</button>
+                        <button class="toggle-btn">Sell</button>
+                    </div>
+                </div>
+                <div class="trade-form">
+                    <div class="form-group">
+                        <label class="form-label">Select Asset</label>
+                        <select class="form-select">
+                            <option>BTC/USD</option>
+                            <option>ETH/USD</option>
+                            <option>SOL/USD</option>
+                            <option>ADA/USD</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Order Type</label>
+                        <select class="form-select">
+                            <option>Market Order</option>
+                            <option>Limit Order</option>
+                            <option>Stop Loss</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Amount ($)</label>
+                        <input type="number" class="form-input" placeholder="0.00" min="0.25" step="0.01">
+                        <div class="input-hint">
+                            <span class="hint-icon">⚠️</span>
+                            Minimum trade: $0.25
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="amount-presets">
+                            <button class="preset-btn">$25</button>
+                            <button class="preset-btn">$50</button>
+                            <button class="preset-btn">$100</button>
+                            <button class="preset-btn">$250</button>
+                        </div>
+                    </div>
+
+                    <div class="trade-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Estimated Cost:</span>
+                            <span class="summary-value">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Fee (0.1%):</span>
+                            <span class="summary-value">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span class="summary-label">Total:</span>
+                            <span class="summary-value">$0.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary trade-btn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Execute Trade
+                    </button>
+                </div>
+            </section>
+
+            <!-- AI Analysis Sidebar -->
+            <aside class="glass-panel ai-analysis">
+                <div class="panel-header">
+                    <h2 class="panel-title">AI Market Insights</h2>
+                    <button class="btn-icon" aria-label="Refresh analysis">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3v3m0 10v3m9-9h-3m-12 0H3m4.5-5.5L5 5m10 10l-2.5-2.5M5 15l2.5-2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="ai-insights">
+                    <div class="insight-card bullish">
+                        <div class="insight-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M7 14l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Bullish Signal</h3>
+                            <p class="insight-text">BTC showing strong momentum with 78% confidence</p>
+                            <span class="insight-time">Updated 2 min ago</span>
+                        </div>
+                    </div>
+
+                    <div class="insight-card neutral">
+                        <div class="insight-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Market Watch</h3>
+                            <p class="insight-text">ETH consolidation phase expected, range: $2,400-$2,550</p>
+                            <span class="insight-time">Updated 5 min ago</span>
+                        </div>
+                    </div>
+
+                    <div class="insight-card warning">
+                        <div class="insight-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Risk Alert</h3>
+                            <p class="insight-text">High volatility detected, consider reducing position sizes</p>
+                            <span class="insight-time">Updated 8 min ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="market-sentiment">
+                    <h3 class="sentiment-title">Market Sentiment</h3>
+                    <div class="sentiment-gauge">
+                        <svg width="120" height="60" viewBox="0 0 120 60">
+                            <path d="M10 50 A50 50 0 0 1 110 50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M10 50 A50 50 0 0 1 60 10" fill="none" stroke="#ff4466" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M60 10 A50 50 0 0 1 110 50" fill="none" stroke="#00ff88" stroke-width="8" stroke-linecap="round"/>
+                            <circle cx="75" cy="35" r="6" fill="#00ff88"/>
+                        </svg>
+                        <div class="sentiment-label">
+                            <span class="sentiment-value">Greed</span>
+                            <span class="sentiment-score">72/100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-recommendations">
+                    <h3 class="recommendations-title">AI Recommendations</h3>
+                    <div class="recommendation-item">
+                        <div class="rec-badge buy">BUY</div>
+                        <div class="rec-info">
+                            <div class="rec-name">BTC Dip Buy</div>
+                            <div class="rec-confidence">85% confidence</div>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <div class="rec-badge hold">HOLD</div>
+                        <div class="rec-info">
+                            <div class="rec-name">ETH Position</div>
+                            <div class="rec-confidence">92% confidence</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 class="footer-title">Network</h4>
+                <div class="network-toggle">
+                    <button class="network-btn active">
+                        <span class="network-dot testnet"></span>
+                        Testnet
+                    </button>
+                    <button class="network-btn">
+                        <span class="network-dot mainnet"></span>
+                        Mainnet
+                    </button>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-title">Status</h4>
+                <div class="status-indicators">
+                    <div class="status-item">
+                        <span class="status-dot success"></span>
+                        <span class="status-label">API</span>
+                        <span class="status-value">Operational</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot success"></span>
+                        <span class="status-label">Strategies</span>
+                        <span class="status-value">Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-title">Quick Links</h4>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="#" class="footer-link">API Reference</a>
+                    <a href="#" class="footer-link">Support</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-title">Version</h4>
+                <div class="version-info">
+                    <span class="version-number">v2.4.1</span>
+                    <span class="build-date">Build 2024.12.09</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://js.puter.com/v2/"></script>
+    <script type="module" src="./services/websocket-service.js"></script>
+    <script type="module" src="./services/hyperliquid-service.js"></script>
+    <script type="module" src="./services/ai-optimizer.js"></script>
+    <script type="module" src="./services/subscription-manager.js"></script>
+    <script type="module" src="./services/trading-monitor.js"></script>
+    <script type="module" src="./services/moondev-algorithms.js"></script>
+    <script type="module" src="./ultimate-trading-app.js"></script>
+</body>
+</html>

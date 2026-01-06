@@ -1,0 +1,36 @@
+# Hyperliquid API Configuration Template
+# Copy this file to config_keys.py and fill in your actual keys
+
+import os
+
+# Hyperliquid API Configuration
+HYPERLIQUID_PRIVATE_KEY = ""  # Your private key from Hyperliquid
+HYPERLIQUID_ADDRESS = ""      # Your wallet address
+
+# Discord Webhook for alerts (optional but recommended)
+DISCORD_WEBHOOK_URL = ""
+
+# Trading Parameters for $25 capital
+TRADING_CONFIG = {
+    "capital": 25.0,           # Your starting capital
+    "leverage": 10,            # Conservative leverage
+    "max_position_value": 250, # $25 * 10 leverage
+    "position_size_dollars": 5, # $5 per trade
+    "symbol": "WIF",           # Trading symbol
+    "stop_loss_pct": 0.05,     # 5% stop loss
+    "take_profit_pct": 0.10,   # 10% take profit
+    "max_daily_loss": 2.5,     # $2.5 max daily loss (10% of capital)
+}
+
+# Risk Management
+RISK_LIMITS = {
+    "max_positions": 1,        # Max open positions
+    "max_daily_trades": 10,    # Max trades per day
+    "emergency_stop": True,    # Enable emergency stop
+}
+
+print("⚠️  CONFIGURATION WARNING:")
+print("1. Copy this file to 'config_keys.py'")
+print("2. Fill in your actual Hyperliquid API keys")
+print("3. NEVER share your private keys!")
+print("4. Test with small amounts first!")

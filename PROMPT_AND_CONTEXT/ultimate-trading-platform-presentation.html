@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Algorithmic Trading Platform</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .slide h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .slide h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 50%, #42a5f5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .slide h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #a0a0a0;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .pricing-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 30px 60px rgba(0, 212, 255, 0.2);
+        }
+        
+        .pricing-card.featured {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+        }
+        
+        .architecture-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 60px 0;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .platform-layer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            min-width: 200px;
+        }
+        
+        .platform-layer h4 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .platform-layer p {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(255, 107, 107, 0.2) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2);
+        }
+        
+        .tech-name {
+            font-weight: 600;
+            color: #8b5cf6;
+            margin-bottom: 10px;
+        }
+        
+        .tech-description {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 167, 38, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border: 1px solid rgba(255, 167, 38, 0.3);
+            border-radius: 16px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffa726 0%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #a0a0a0;
+            font-weight: 500;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+            max-width: 300px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 60px 0;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .timeline-item {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -15px;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff 0%, #8b5cf6 100%);
+            transform: translateY(-50%);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .timeline-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-description {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .timeline-item::after {
+                display: none;
+            }
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .big-number {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff 0%, #ff6b6b 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide">
+            <h1>🚀 Ultimate Algorithmic Trading Platform</h1>
+            <p class="hero-subtitle">Democratizing Professional Trading with <span class="gradient-text">$0.25 Minimum Positions</span></p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">$0.25</div>
+                    <div class="stat-label">Minimum Position</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">AI Models</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$0</div>
+                    <div class="stat-label">Infrastructure Cost</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Scalable Users</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Problem -->
+        <div class="slide">
+            <h2>🎯 The Problem We're Solving</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">💰</span>
+                    <div class="feature-title">High Barriers to Entry</div>
+                    <div class="feature-description">Traditional trading platforms require $1000+ minimum deposits, excluding millions of potential traders</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <div class="feature-title">Complex AI Infrastructure</div>
+                    <div class="feature-description">Building algorithmic trading requires expensive server infrastructure and AI model subscriptions</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📈</span>
+                    <div class="feature-title">Limited Access to DeFi</div>
+                    <div class="feature-description">Most platforms don't support micro-positions on decentralized exchanges like Hyperliquid</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <div class="feature-title">Expensive Infrastructure</div>
+                    <div class="feature-description">Traditional cloud infrastructure costs thousands monthly, limiting scalability</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Our Solution -->
+        <div class="slide">
+            <h2>💡 Our Revolutionary Solution</h2>
+            <div class="architecture-diagram">
+                <div class="platform-layer">
+                    <h4>🧠 Puter.js AI</h4>
+                    <p>500+ AI Models<br>Free for Developers</p>
+                </div>
+                <div class="platform-layer">
+                    <h4>☁️ Cloud Infrastructure</h4>
+                    <p>Zero Server Costs<br>User-Pays Model</p>
+                </div>
+                <div class="platform-layer">
+                    <h4>🔗 Hyperliquid DEX</h4>
+                    <p>Micro-Position Trading<br>$0.25 Minimum</p>
+                </div>
+                <div class="platform-layer">
+                    <h4>📱 Modern UI</h4>
+                    <p>Glassmorphic Design<br>Professional Trading</p>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h3>🎯 The Result: The World's Most Accessible Algorithmic Trading Platform</h3>
+            </div>
+        </div>
+
+        <!-- Slide 4: Puter.js Ecosystem -->
+        <div class="slide">
+            <h2>🌟 Puter.js: Our Complete Infrastructure</h2>
+            <p class="hero-subtitle">Zero infrastructure costs, maximum capabilities</p>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div class="tech-name">🧠 AI Models</div>
+                    <div class="tech-description">500+ models including GPT-5 nano, Claude, Gemini</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">☁️ Cloud Storage</div>
+                    <div class="tech-description">puter.fs for trade history & configs</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">🗃️ Key-Value Store</div>
+                    <div class="tech-description">puter.kv for user data & portfolios</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">🔐 Authentication</div>
+                    <div class="tech-description">puter.auth for seamless sign-in</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">⚡ Serverless Workers</div>
+                    <div class="tech-description">puter.workers for backend logic</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">🎨 Image Analysis</div>
+                    <div class="tech-description">Chart pattern recognition</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">🔊 Text-to-Speech</div>
+                    <div class="tech-description">Real-time trading alerts</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">🌐 Web Hosting</div>
+                    <div class="tech-description">Auto-deploy with puter.hosting</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Platform Features -->
+        <div class="slide">
+            <h2>⚡ Core Platform Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <div class="feature-title">Micro-Position Trading</div>
+                    <div class="feature-description">Trade with as little as $0.25 on Hyperliquid DEX. Perfect for testing strategies and small accounts.</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <div class="feature-title">AI Strategy Optimization</div>
+                    <div class="feature-description">Leverage 500+ AI models to analyze, optimize, and improve your trading strategies automatically.</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-title">Real-Time Analytics</div>
+                    <div class="feature-description">Professional trading dashboard with live P&L, risk metrics, and portfolio performance.</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔧</span>
+                    <div class="feature-title">10+ Trading Strategies</div>
+                    <div class="feature-description">Turtle Trading, Bollinger Bands, VWAP, Mean Reversion, Grid Trading, and more.</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <div class="feature-title">Mobile-First Design</div>
+                    <div class="feature-description">Responsive interface that works perfectly on desktop, tablet, and mobile devices.</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🛡️</span>
+                    <div class="feature-title">Risk Management</div>
+                    <div class="feature-description">Automated stop-loss, position sizing, and portfolio diversification alerts.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Design Mockup -->
+        <div class="slide">
+            <h2>🎨 Modern Trading Interface</h2>
+            <p class="hero-subtitle">Glassmorphic design inspired by professional trading terminals</p>
+            <div class="highlight-box">
+                <h3>🖥️ Professional Trading Terminal Aesthetic</h3>
+                <div class="big-number">🎨</div>
+                <p style="color: #a0a0a0; font-size: 1.1rem;">Dark theme with glassmorphic cards, real-time charts, and intuitive controls. Designed for both beginners and professionals.</p>
+                <div style="margin-top: 30px;">
+                    <span style="background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%); padding: 10px 20px; border-radius: 25px; margin: 0 10px;">Real-time Charts</span>
+                    <span style="background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%); padding: 10px 20px; border-radius: 25px; margin: 0 10px;">Portfolio View</span>
+                    <span style="background: linear-gradient(135deg, #8b5cf6 0%, #00d4ff 100%); padding: 10px 20px; border-radius: 25px; margin: 0 10px;">Strategy Management</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Business Model -->
+        <div class="slide">
+            <h2>💰 User-Pays Business Model</h2>
+            <p class="hero-subtitle">Developers pay $0 - Users pay only for their usage</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 style="color: #a0a0a0;">Starter</h3>
+                    <div class="price">$9.99</div>
+                    <p style="color: #a0a0a0; margin-bottom: 20px;">/month</p>
+                    <ul style="text-align: left; color: #a0a0a0;">
+                        <li>5 Active Strategies</li>
+                        <li>$1,000 Max Positions</li>
+                        <li>Basic AI Optimization</li>
+                        <li>Email Support</li>
+                    </ul>
+                </div>
+                <div class="pricing-card featured">
+                    <h3 style="color: #00d4ff;">Pro</h3>
+                    <div class="price">$49.99</div>
+                    <p style="color: #a0a0a0; margin-bottom: 20px;">/month</p>
+                    <ul style="text-align: left; color: #a0a0a0;">
+                        <li>25 Active Strategies</li>
+                        <li>$10,000 Max Positions</li>
+                        <li>Advanced AI Features</li>
+                        <li>Priority Support</li>
+                    </ul>
+                </div>
+                <div class="pricing-card">
+                    <h3 style="color: #8b5cf6;">Elite</h3>
+                    <div class="price">$199.99</div>
+                    <p style="color: #a0a0a0; margin-bottom: 20px;">/month</p>
+                    <ul style="text-align: left; color: #a0a0a0;">
+                        <li>Unlimited Strategies</li>
+                        <li>$100,000 Max Positions</li>
+                        <li>All AI Models</li>
+                        <li>Phone Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Implementation Roadmap -->
+        <div class="slide">
+            <h2>🚀 Implementation Roadmap</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-title">Foundation</div>
+                    <div class="timeline-description">Puter.js integration, Authentication, Hyperliquid connection, Basic UI</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-title">Core Trading</div>
+                    <div class="timeline-description">5 strategies, AI optimization, Portfolio tracking, Subscription tiers</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-title">Advanced Features</div>
+                    <div class="timeline-description">All strategies, Mobile app, Analytics, API marketplace</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">4</div>
+                    <div class="timeline-title">Scale</div>
+                    <div class="timeline-description">Enterprise features, White-label, Global expansion</div>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h3>🎯 Complete Platform in 90 Days</h3>
+            </div>
+        </div>
+
+        <!-- Slide 9: Success Metrics -->
+        <div class="slide">
+            <h2>📈 Success Metrics & Impact</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">$0.25</div>
+                    <div class="stat-label">Minimum Position<br>(Market First)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">AI Models<br>(Free for Devs)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$0</div>
+                    <div class="stat-label">Infrastructure Cost<br>(User-Pays Model)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Scalable Users<br>(No Cost Increase)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">Trading Strategies<br>(Ready to Deploy)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime<br>(Puter.js Infrastructure)</div>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h3>🌍 Democratizing Algorithmic Trading for Everyone</h3>
+                <p style="color: #a0a0a0; margin-top: 20px;">From $1000 minimum to $0.25 - making professional trading accessible to millions</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Call to Action -->
+        <div class="slide">
+            <h2>🎯 Ready to Build the Future of Trading?</h2>
+            <p class="hero-subtitle">Let's create the most accessible algorithmic trading platform ever built</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🚀</span>
+                    <div class="feature-title">Zero Infrastructure Costs</div>
+                    <div class="feature-description">Use Puter.js for everything - pay nothing as a developer</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <div class="feature-title">Market Differentiation</div>
+                    <div class="feature-description">$0.25 minimum positions - first in the market</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <div class="feature-title">500+ AI Models</div>
+                    <div class="feature-description">Unlimited AI optimization capabilities</div>
+                </div>
+            </div>
+            <a href="#" class="cta-button">Start Building Now 🚀</a>
+            <div style="margin-top: 40px; text-align: center; color: #a0a0a0;">
+                <p>Powered by <span class="gradient-text">Puter.js</span> • Integrated with <span class="gradient-text">Hyperliquid</span></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Smooth scrolling animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            slides.forEach(slide => {
+                slide.style.opacity = '0';
+                slide.style.transform = 'translateY(50px)';
+                slide.style.transition = 'all 0.8s ease-out';
+                observer.observe(slide);
+            });
+            
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.feature-card, .pricing-card, .tech-item');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+{
+  "demo": {
+    "enabled": true,
+    "autoStart": true,
+    "defaultStrategies": [
+      {
+        "name": "turtle-trading",
+        "symbol": "BTC-USD",
+        "timeframe": "5m",
+        "size": 100,
+        "leverage": 5,
+        "status": "active"
+      },
+      {
+        "name": "mean-reversion",
+        "symbols": ["ETH-USD", "SOL-USD"],
+        "smaPeriod": 20,
+        "entryThreshold": 2.0,
+        "sizePerPosition": 200,
+        "maxPositions": 5,
+        "status": "active"
+      }
+    ],
+    "portfolio": {
+      "initialBalance": 10000,
+      "currency": "USD",
+      "riskTolerance": "medium",
+      "maxDrawdown": 0.1
+    },
+    "subscription": {
+      "tier": "pro",
+      "features": {
+        "aiOptimization": true,
+        "backtesting": true,
+        "customStrategies": true,
+        "apiAccess": true
+      }
+    },
+    "webSocket": {
+      "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "AVAXUSDT"],
+      "exchanges": ["binance", "coinbase", "hyperliquid"]
+    },
+    "ai": {
+      "model": "gpt-5-nano",
+      "optimizationInterval": 300000,
+      "confidenceThreshold": 0.75,
+      "marketAnalysis": {
+        "sentiment": "bullish",
+        "volatility": "medium",
+        "trend": "uptrend"
+      }
+    }
+  },
+  "backtest": {
+    "startDate": "2024-01-01",
+    "endDate": "2024-12-31",
+    "initialCapital": 10000,
+    "strategies": [
+      {
+        "name": "turtle-trading",
+        "symbol": "BTC-USD",
+        "timeframe": "1h",
+        "lookbackPeriod": 55,
+        "atrMultiplier": 2.0,
+        "size": 1000,
+        "leverage": 3
+      },
+      {
+        "name": "correlation-trading",
+        "leaderSymbol": "ETH-USD",
+        "followerSymbols": ["BTC-USD", "SOL-USD"],
+        "lagThreshold": 0.005,
+        "size": 500,
+        "maxPositions": 3
+      }
+    ],
+    "metrics": [
+      "totalReturn",
+      "sharpeRatio",
+      "maxDrawdown",
+      "winRate",
+      "profitFactor",
+      "totalTrades"
+    ]
+  },
+  "paperTrading": {
+    "enabled": true,
+    "initialBalance": 10000,
+    "currency": "USD",
+    "strategies": [
+      {
+        "name": "turtle-trading",
+        "symbol": "BTC-USD",
+        "size": 100,
+        "leverage": 5,
+        "status": "active"
+      },
+      {
+        "name": "arbitrage",
+        "minProfitThreshold": 0.001,
+        "baseSize": 1000,
+        "maxConcurrentArbitrages": 3,
+        "status": "active"
+      }
+    ],
+    "notifications": {
+      "tradeExecutions": true,
+      "profitTargets": true,
+      "stopLosses": true,
+      "dailySummary": true
+    }
+  }
+}

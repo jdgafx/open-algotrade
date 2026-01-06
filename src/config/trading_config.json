@@ -1,0 +1,74 @@
+{
+  "trading": {
+    "exchange": "hyperliquid",
+    "sandbox": false,
+    "rate_limit": {
+      "requests_per_second": 50,
+      "orders_per_second": 20
+    }
+  },
+  "strategies": {
+    "market_making": {
+      "enabled": true,
+      "size": 1000,
+      "spread_percentage": 0.001,
+      "max_position_size": 10000,
+      "risk_limit": 5000,
+      "time_limit_minutes": 120,
+      "kill_switch_enabled": true
+    },
+    "turtle_trend": {
+      "enabled": true,
+      "lookback_period": 55,
+      "atr_multiplier": 2.0,
+      "take_profit_percentage": 0.2,
+      "size": 500,
+      "timeframes": ["1m", "5m", "15m", "1h", "4h"]
+    },
+    "correlation": {
+      "enabled": true,
+      "leader_symbol": "ETH",
+      "follower_symbols": ["BTC", "SOL", "ADA", "DOT", "MATIC", "AVAX"],
+      "lookback_period": 20,
+      "lag_threshold_percentage": 0.5,
+      "stop_loss_percentage": 0.2,
+      "take_profit_percentage": 0.25
+    },
+    "mean_reversion": {
+      "enabled": true,
+      "sma_period": 20,
+      "entry_threshold_deviation": 2.0,
+      "exit_threshold_deviation": 0.5,
+      "max_positions": 10,
+      "size_per_position": 200
+    },
+    "arbitrage": {
+      "enabled": true,
+      "min_profit_threshold": 0.001,
+      "execution_speed_ms": 100,
+      "max_slippage": 0.0005
+    }
+  },
+  "risk_management": {
+    "max_portfolio_risk": 10000,
+    "max_position_size": 2000,
+    "max_leverage": 5,
+    "portfolio_stop_loss": 0.15,
+    "daily_loss_limit": 2000,
+    "max_concurrent_positions": 8
+  },
+  "performance": {
+    "high_frequency_mode": true,
+    "parallel_execution": true,
+    "cache_enabled": true,
+    "websocket_streaming": true,
+    "order_cancellation_ms": 50
+  },
+  "monitoring": {
+    "log_level": "INFO",
+    "metrics_collection": true,
+    "alert_email": "",
+    "discord_webhook": "",
+    "performance_tracking": true
+  }
+}

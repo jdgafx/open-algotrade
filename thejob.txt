@@ -1,0 +1,10 @@
+ look in this dir; ruminate deeply upon its contents. these are the real moondev 
+scripts. create the ultimate, easy to use, easy to particpate as in buying shares/ but also being multitenant. 
+use this as a design template to start... make the ultimate dashboard, user friendly, usermanagement; users see
+ the same thing. host the whole thing on PUTER.JS and use the prompt.md in this dir to us ethe puter.js api. 
+make them have to always login  via browser via puter.js always. puse puter-cli . . see  prompt.md for the 
+whole puter.js ai. use onuse only puter.js ai and serverless infgrastructure for all but  use hyperliquid for 
+the dex ... make sure we operate bu moondev's best  practices but we will far eclipse him and his group. with 
+more class and PROFIT. this must make us money now. even with ultra small investments. look att all the 
+scripts, iknfo and data we have here, and also reserach your own for the latest, make the best trading s ystem 
+possible."

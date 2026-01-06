@@ -1,0 +1,60 @@
+{
+  "hyperliquid": {
+    "apiKey": "your_api_key_here",
+    "secretKey": "your_secret_key_here",
+    "isTestnet": true,
+    "baseUrl": "https://api.hyperliquid.xyz/info"
+  },
+  "websocket": {
+    "endpoints": {
+      "binance": "wss://stream.binance.com:9443/ws/",
+      "coinbase": "wss://ws-feed.exchange.coinbase.com",
+      "hyperliquid": "wss://api.hyperliquid.xyz/ws"
+    },
+    "reconnectInterval": 5000,
+    "maxReconnectAttempts": 10
+  },
+  "subscription": {
+    "defaultTier": "micro",
+    "paymentMethods": ["crypto", "credit-card", "paypal"],
+    "billingCycles": ["monthly", "quarterly", "annual"]
+  },
+  "ai": {
+    "model": "gpt-5-nano",
+    "optimizationInterval": 300000,
+    "confidenceThreshold": 0.75
+  },
+  "trading": {
+    "defaultStrategies": ["turtle", "correlation"],
+    "maxConcurrentStrategies": 5,
+    "riskManagement": {
+      "maxDrawdown": 0.1,
+      "stopLossPercentage": 0.02,
+      "takeProfitPercentage": 0.05
+    }
+  },
+  "monitoring": {
+    "alertChannels": ["push", "email"],
+    "checkInterval": 60000,
+    "rules": [
+      {
+        "id": "drawdown_alert",
+        "condition": "portfolio_drawdown > 0.05",
+        "severity": "high"
+      },
+      {
+        "id": "loss_streak",
+        "condition": "consecutive_losses >= 5",
+        "severity": "medium"
+      }
+    ]
+  },
+  "performance": {
+    "cacheExpiry": 300000,
+    "batchSize": 100,
+    "rateLimit": {
+      "windowMs": 60000,
+      "maxRequests": 100
+    }
+  }
+}
