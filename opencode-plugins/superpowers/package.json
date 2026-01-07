@@ -1,0 +1,19 @@
+{
+  "name": "algotrade-superpowers",
+  "version": "1.0.0",
+  "description": "AlgoTrade Superpowers MCP Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mcp",
+    "trading",
+    "algotrade"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "mcpServers": {
+    "algotrade-superpowers": {
+      "command": "node",
+      "args": ["opencode-plugins/superpowers/index.js"],
+      "env": {
+        "ALGOTRADE_ENV": "development",
+        "NODE_ENV": "development"
+      }
+    }
+  },
+  "tools": {
+    "frontend": {
+      "create-react-app": {
+        "description": "Create React app with TypeScript for trading dashboard",
+        "parameters": {
+          "name": "string",
+          "typescript": "boolean",
+          "pwa": "boolean"
+        }
+      },
+      "add-charting": {
+        "description": "Add real-time charting capabilities",
+        "parameters": {
+          "library": ["tradingview", "chartjs", "d3"],
+          "realtime": "boolean"
+        }
+      }
+    },
+    "backend": {
+      "create-api": {
+        "description": "Create Node.js API with trading features",
+        "parameters": {
+          "framework": ["express", "fastify", "koa"],
+          "websocket": "boolean",
+          "graphql": "boolean"
+        }
+      },
+      "setup-database": {
+        "description": "Setup database connections for trading data",
+        "parameters": {
+          "type": ["mongodb", "influxdb", "timescaledb"],
+          "connection": "string"
+        }
+      }
+    },
+    "trading": {
+      "connect-exchange": {
+        "description": "Connect to cryptocurrency exchange",
+        "parameters": {
+          "exchange": ["binance", "coinbase", "kraken"],
+          "api_key": "string",
+          "secret": "string"
+        }
+      },
+      "backtest-strategy": {
+        "description": "Backtest trading strategy",
+        "parameters": {
+          "strategy": "string",
+          "data": "string",
+          "period": "string"
+        }
+      }
+    },
+    "ai-ml": {
+      "train-model": {
+        "description": "Train ML model for trading predictions",
+        "parameters": {
+          "algorithm": ["lstm", "random_forest", "xgboost"],
+          "data": "string",
+          "features": "array"
+        }
+      },
+      "deploy-model": {
+        "description": "Deploy trained model to production",
+        "parameters": {
+          "model": "string",
+          "endpoint": "string"
+        }
+      }
+    }
+  }
+}

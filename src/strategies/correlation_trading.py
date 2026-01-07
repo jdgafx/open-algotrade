@@ -19,24 +19,28 @@ from ..utils.hyperliquid_client import HyperliquidClient, MarketData, Position
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class CorrelationConfig:
     """Configuration for correlation trading strategy"""
+
     leader_symbol: str  # ETH
     follower_symbols: List[str]  # BTC, SOL, ADA, DOT, etc.
     timeframe: str = "5m"
     lookback_period: int = 20
-    lag_threshold_percentage: Decimal = Decimal('0.5')  # 0.5% lag threshold
-    stop_loss_percentage: Decimal = Decimal('0.002')  # 0.2% stop loss
-    take_profit_percentage: Decimal = Decimal('0.0025')  # 0.25% take profit
-    size: Decimal = Decimal('1')
+    lag_threshold_percentage: Decimal = Decimal("0.5")  # 0.5% lag threshold
+    stop_loss_percentage: Decimal = Decimal("0.002")  # 0.2% stop loss
+    take_profit_percentage: Decimal = Decimal("0.0025")  # 0.25% take profit
+    size: Decimal = Decimal("1")
     max_positions: int = 3
-    min_correlation: Decimal = Decimal('0.7')  # Minimum correlation threshold
+    min_correlation: Decimal = Decimal("0.7")  # Minimum correlation threshold
     entry_cooldown_minutes: int = 30  # Cooldown between entries
+
 
 @dataclass
 class CorrelationSignal:
     """Represents a correlation trading signal"""
+
     leader_symbol: str
     follower_symbol: str
     direction: str  # "long" or "short"
@@ -44,6 +48,7 @@ class CorrelationSignal:
     lag_percentage: Decimal
     correlation_strength: Decimal
     timestamp: float
+
 
 class CorrelationTrader:
     """
@@ -63,17 +68,23 @@ class CorrelationTrader:
         self.config = config
         self.active_positions: Dict[str, Position] = {}
         self.correlation_history: Dict[Tuple[str, str], List[float]] = {}
-        self.price_history: Dict[str, List[Tuple[float, Decimal]]] = {}  # (timestamp, price)
+        self.price_history: Dict[
+            str, List[Tuple[float, Decimal]]
+        ] = {}  # (timestamp, price)
         self.last_entry_times: Dict[str, float] = {}
         self.total_trades = 0
         self.winning_trades = 0
-        self.total_pnl = Decimal('0')
+        self.total_pnl = Decimal("0")
 
-        logger.info(f"Initialized Correlation Trader with leader {config.leader_symbol}")
+        logger.info(
+            f"Initialized Correlation Trader with leader {config.leader_symbol}"
+        )
 
     async def start(self):
         """Start the correlation trading bot"""
-        logger.info(f"🔗 Starting Correlation Trader with leader {self.config.leader_symbol}")
+        logger.info(
+            f"🔗 Starting Correlation Trader with leader {self.config.leader_symbol}"
+        )
 
         # Initialize price history
         await self._initialize_price_history()
@@ -99,10 +110,32 @@ class CorrelationTrader:
                 await self._manage_positions()
 
                 await asyncio.sleep(15)  # Check every 15 seconds
-
             except Exception as e:
                 logger.error(f"Error in correlation trading loop: {e}")
                 await asyncio.sleep(30)
+
+    async def iteration(self):
+        """Single iteration for backtesting compatibility"""
+        try:
+            # Update price data
+            await self._update_price_data()
+
+            # Update active positions
+            await self._update_positions()
+
+            # Calculate correlations
+            correlations = await self._calculate_correlations()
+
+            # Identify trading opportunities
+            signals = await self._identify_trading_opportunities(correlations)
+
+            # Execute valid signals
+            await self._execute_signals(signals)
+
+            # Manage existing positions
+            await self._manage_positions()
+        except Exception as e:
+            logger.error(f"Error in correlation iteration: {e}")
 
     async def _initialize_price_history(self):
         """Initialize historical price data for all symbols"""
@@ -112,18 +145,20 @@ class CorrelationTrader:
             for symbol in all_symbols:
                 # Get historical data
                 ohlcv_data = await self.client.get_ohlcv(
-                    symbol,
-                    self.config.timeframe,
-                    self.config.lookback_period + 50
+                    symbol, self.config.timeframe, self.config.lookback_period + 50
                 )
 
                 # Convert to price history
                 price_history = []
                 for candle in ohlcv_data:
-                    price_history.append((candle[0], Decimal(str(candle[4]))))  # (timestamp, close)
+                    price_history.append(
+                        (candle[0], Decimal(str(candle[4])))
+                    )  # (timestamp, close)
 
                 self.price_history[symbol] = price_history
-                logger.debug(f"Initialized price history for {symbol}: {len(price_history)} points")
+                logger.debug(
+                    f"Initialized price history for {symbol}: {len(price_history)} points"
+                )
 
         except Exception as e:
             logger.error(f"Error initializing price history: {e}")
@@ -159,7 +194,10 @@ class CorrelationTrader:
             self.active_positions = {}
 
             for position in positions:
-                if position.symbol in self.config.follower_symbols and abs(position.size) > 0:
+                if (
+                    position.symbol in self.config.follower_symbols
+                    and abs(position.size) > 0
+                ):
                     self.active_positions[position.symbol] = position
 
         except Exception as e:
@@ -180,8 +218,7 @@ class CorrelationTrader:
                 if len(follower_prices) >= len(leader_prices):
                     # Calculate correlation
                     correlation = self._calculate_correlation_coefficient(
-                        leader_prices[-len(follower_prices):],
-                        follower_prices
+                        leader_prices[-len(follower_prices) :], follower_prices
                     )
                     correlations[follower] = correlation
 
@@ -194,7 +231,9 @@ class CorrelationTrader:
 
                     # Keep only recent correlation values
                     if len(self.correlation_history[pair_key]) > 100:
-                        self.correlation_history[pair_key] = self.correlation_history[pair_key][-100:]
+                        self.correlation_history[pair_key] = self.correlation_history[
+                            pair_key
+                        ][-100:]
 
             return correlations
 
@@ -212,8 +251,8 @@ class CorrelationTrader:
             returns = []
 
             for i in range(1, len(prices)):
-                if prices[i-1] != 0:
-                    return_rate = (prices[i] - prices[i-1]) / prices[i-1]
+                if prices[i - 1] != 0:
+                    return_rate = (prices[i] - prices[i - 1]) / prices[i - 1]
                     returns.append(return_rate)
 
             return returns
@@ -222,7 +261,9 @@ class CorrelationTrader:
             logger.error(f"Error calculating price returns for {symbol}: {e}")
             return []
 
-    def _calculate_correlation_coefficient(self, x: List[float], y: List[float]) -> float:
+    def _calculate_correlation_coefficient(
+        self, x: List[float], y: List[float]
+    ) -> float:
         """Calculate Pearson correlation coefficient"""
         try:
             if len(x) != len(y) or len(x) < 2:
@@ -247,7 +288,9 @@ class CorrelationTrader:
             logger.error(f"Error calculating correlation: {e}")
             return 0.0
 
-    async def _identify_trading_opportunities(self, correlations: Dict[str, float]) -> List[CorrelationSignal]:
+    async def _identify_trading_opportunities(
+        self, correlations: Dict[str, float]
+    ) -> List[CorrelationSignal]:
         """Identify lagging cryptocurrencies that are likely to follow the leader"""
         try:
             signals = []
@@ -265,7 +308,9 @@ class CorrelationTrader:
             leader_price = leader_data.last_price
 
             # Calculate leader's recent movement (last few candles)
-            leader_movement = await self._calculate_recent_movement(self.config.leader_symbol)
+            leader_movement = await self._calculate_recent_movement(
+                self.config.leader_symbol
+            )
 
             for follower in self.config.follower_symbols:
                 # Check if correlation is strong enough
@@ -292,7 +337,10 @@ class CorrelationTrader:
                 )
 
                 # Generate signals based on leader's direction and follower's lag
-                if leader_movement > 0 and lag_percentage > self.config.lag_threshold_percentage:
+                if (
+                    leader_movement > 0
+                    and lag_percentage > self.config.lag_threshold_percentage
+                ):
                     # Leader is strong, follower is lagging upward - go long
                     signal = CorrelationSignal(
                         leader_symbol=self.config.leader_symbol,
@@ -301,11 +349,14 @@ class CorrelationTrader:
                         entry_price=follower_market_data.bid,  # Buy at bid
                         lag_percentage=lag_percentage,
                         correlation_strength=abs(correlation),
-                        timestamp=current_time
+                        timestamp=current_time,
                     )
                     signals.append(signal)
 
-                elif leader_movement < 0 and lag_percentage > self.config.lag_threshold_percentage:
+                elif (
+                    leader_movement < 0
+                    and lag_percentage > self.config.lag_threshold_percentage
+                ):
                     # Leader is weak, follower is lagging downward - go short
                     signal = CorrelationSignal(
                         leader_symbol=self.config.leader_symbol,
@@ -314,7 +365,7 @@ class CorrelationTrader:
                         entry_price=follower_market_data.ask,  # Sell at ask
                         lag_percentage=lag_percentage,
                         correlation_strength=abs(correlation),
-                        timestamp=current_time
+                        timestamp=current_time,
                     )
                     signals.append(signal)
 
@@ -332,7 +383,10 @@ class CorrelationTrader:
     async def _calculate_recent_movement(self, symbol: str) -> float:
         """Calculate recent price movement percentage"""
         try:
-            if symbol not in self.price_history or len(self.price_history[symbol]) < self.config.lookback_period:
+            if (
+                symbol not in self.price_history
+                or len(self.price_history[symbol]) < self.config.lookback_period
+            ):
                 return 0.0
 
             # Get price at the beginning of lookback period
@@ -349,7 +403,9 @@ class CorrelationTrader:
             logger.error(f"Error calculating recent movement for {symbol}: {e}")
             return 0.0
 
-    def _calculate_lag_percentage(self, leader_movement: float, follower_movement: float, correlation: float) -> Decimal:
+    def _calculate_lag_percentage(
+        self, leader_movement: float, follower_movement: float, correlation: float
+    ) -> Decimal:
         """Calculate how much the follower is lagging behind the leader"""
         try:
             # Expected follower movement based on correlation
@@ -362,20 +418,26 @@ class CorrelationTrader:
 
         except Exception as e:
             logger.error(f"Error calculating lag percentage: {e}")
-            return Decimal('0')
+            return Decimal("0")
 
     async def _execute_signals(self, signals: List[CorrelationSignal]):
         """Execute correlation trading signals"""
         try:
             for signal in signals:
-                logger.info(f"🎯 Executing correlation signal: {signal.direction} {signal.follower_symbol}")
-                logger.info(f"   Lag: {signal.lag_percentage:.3f}%, Correlation: {signal.correlation_strength:.3f}")
+                logger.info(
+                    f"🎯 Executing correlation signal: {signal.direction} {signal.follower_symbol}"
+                )
+                logger.info(
+                    f"   Lag: {signal.lag_percentage:.3f}%, Correlation: {signal.correlation_strength:.3f}"
+                )
 
                 # Calculate position size
                 position_size = await self._calculate_position_size(signal)
 
                 if position_size == 0:
-                    logger.warning(f"Position size calculated as 0 for {signal.follower_symbol}")
+                    logger.warning(
+                        f"Position size calculated as 0 for {signal.follower_symbol}"
+                    )
                     continue
 
                 # Place entry order
@@ -402,22 +464,32 @@ class CorrelationTrader:
                 size=size,
                 order_type="limit",
                 price=signal.entry_price,
-                time_in_force="PostOnly"
+                time_in_force="PostOnly",
             )
 
             if order_response.get("status") == "ok":
-                logger.info(f"✅ Long correlation order placed: {size} {signal.follower_symbol} @ {signal.entry_price}")
+                logger.info(
+                    f"✅ Long correlation order placed: {size} {signal.follower_symbol} @ {signal.entry_price}"
+                )
 
                 # Place stop loss and take profit orders
-                stop_loss_price = signal.entry_price * (Decimal('1') - self.config.stop_loss_percentage)
-                take_profit_price = signal.entry_price * (Decimal('1') + self.config.take_profit_percentage)
+                stop_loss_price = signal.entry_price * (
+                    Decimal("1") - self.config.stop_loss_percentage
+                )
+                take_profit_price = signal.entry_price * (
+                    Decimal("1") + self.config.take_profit_percentage
+                )
 
                 # Note: In a real implementation, you would place stop orders
                 # For now, we'll track them in memory and manage them manually
-                logger.info(f"   Stop Loss: {stop_loss_price}, Take Profit: {take_profit_price}")
+                logger.info(
+                    f"   Stop Loss: {stop_loss_price}, Take Profit: {take_profit_price}"
+                )
 
             else:
-                logger.error(f"Failed to place long correlation order: {order_response}")
+                logger.error(
+                    f"Failed to place long correlation order: {order_response}"
+                )
 
         except Exception as e:
             logger.error(f"Error entering long position: {e}")
@@ -432,21 +504,31 @@ class CorrelationTrader:
                 size=size,
                 order_type="limit",
                 price=signal.entry_price,
-                time_in_force="PostOnly"
+                time_in_force="PostOnly",
             )
 
             if order_response.get("status") == "ok":
-                logger.info(f"✅ Short correlation order placed: {size} {signal.follower_symbol} @ {signal.entry_price}")
+                logger.info(
+                    f"✅ Short correlation order placed: {size} {signal.follower_symbol} @ {signal.entry_price}"
+                )
 
                 # Place stop loss and take profit orders
-                stop_loss_price = signal.entry_price * (Decimal('1') + self.config.stop_loss_percentage)
-                take_profit_price = signal.entry_price * (Decimal('1') - self.config.take_profit_percentage)
+                stop_loss_price = signal.entry_price * (
+                    Decimal("1") + self.config.stop_loss_percentage
+                )
+                take_profit_price = signal.entry_price * (
+                    Decimal("1") - self.config.take_profit_percentage
+                )
 
                 # Note: In a real implementation, you would place stop orders
-                logger.info(f"   Stop Loss: {stop_loss_price}, Take Profit: {take_profit_price}")
+                logger.info(
+                    f"   Stop Loss: {stop_loss_price}, Take Profit: {take_profit_price}"
+                )
 
             else:
-                logger.error(f"Failed to place short correlation order: {order_response}")
+                logger.error(
+                    f"Failed to place short correlation order: {order_response}"
+                )
 
         except Exception as e:
             logger.error(f"Error entering short position: {e}")
@@ -458,14 +540,16 @@ class CorrelationTrader:
             adjusted_size = self.config.size * Decimal(str(signal.correlation_strength))
 
             # Adjust by lag percentage (higher lag = more confident)
-            lag_multiplier = min(Decimal('2.0'), Decimal('1') + (signal.lag_percentage / Decimal('100')))
+            lag_multiplier = min(
+                Decimal("2.0"), Decimal("1") + (signal.lag_percentage / Decimal("100"))
+            )
             final_size = adjusted_size * lag_multiplier
 
             return final_size
 
         except Exception as e:
             logger.error(f"Error calculating position size: {e}")
-            return Decimal('0')
+            return Decimal("0")
 
     async def _manage_positions(self):
         """Manage existing correlation positions"""
@@ -478,10 +562,14 @@ class CorrelationTrader:
                 # Calculate PnL
                 if position.side == "long":
                     pnl = (current_price - position.entry_price) * position.size
-                    pnl_percentage = ((current_price - position.entry_price) / position.entry_price) * 100
+                    pnl_percentage = (
+                        (current_price - position.entry_price) / position.entry_price
+                    ) * 100
                 else:
                     pnl = (position.entry_price - current_price) * position.size
-                    pnl_percentage = ((position.entry_price - current_price) / position.entry_price) * 100
+                    pnl_percentage = (
+                        (position.entry_price - current_price) / position.entry_price
+                    ) * 100
 
                 # Check exit conditions
                 exit_triggered = False
@@ -503,7 +591,9 @@ class CorrelationTrader:
                     exit_reason = "correlation_breakdown"
 
                 if exit_triggered:
-                    logger.info(f"📤 Exiting {symbol} position: {exit_reason}, PnL: {pnl_percentage:.2f}%")
+                    logger.info(
+                        f"📤 Exiting {symbol} position: {exit_reason}, PnL: {pnl_percentage:.2f}%"
+                    )
                     await self._close_position(symbol, position)
 
                     # Update performance metrics
@@ -518,7 +608,10 @@ class CorrelationTrader:
         """Check if correlation has broken down and position should be exited"""
         try:
             pair_key = (self.config.leader_symbol, symbol)
-            if pair_key not in self.correlation_history or len(self.correlation_history[pair_key]) < 5:
+            if (
+                pair_key not in self.correlation_history
+                or len(self.correlation_history[pair_key]) < 5
+            ):
                 return False
 
             # Get recent correlations
@@ -547,7 +640,7 @@ class CorrelationTrader:
                 side=close_side,
                 size=size,
                 order_type="market",
-                reduce_only=True
+                reduce_only=True,
             )
 
             if order_response.get("status") == "ok":
@@ -581,7 +674,7 @@ class CorrelationTrader:
                 "active_position_symbols": list(self.active_positions.keys()),
                 "current_correlations": current_correlations,
                 "leader_symbol": self.config.leader_symbol,
-                "follower_symbols": self.config.follower_symbols
+                "follower_symbols": self.config.follower_symbols,
             }
         except Exception as e:
             logger.error(f"Error getting performance stats: {e}")

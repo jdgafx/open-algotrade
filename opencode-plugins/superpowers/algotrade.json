@@ -1,0 +1,150 @@
+{
+  "name": "AlgoTrade Superpowers",
+  "version": "1.0.0",
+  "description": "Specialized development tools for algorithmic trading platform",
+  "author": "AlgoTrade Team",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": ["trading", "algotrade", "fintech", "development"],
+  "categories": {
+    "frontend": {
+      "name": "Frontend Development",
+      "description": "Modern frontend tools for trading dashboards and UI",
+      "tools": {
+        "react-typescript": {
+          "name": "React + TypeScript",
+          "description": "React development with TypeScript support",
+          "commands": ["npx create-react-app --template typescript", "npm run dev"],
+          "dependencies": ["react", "typescript", "@types/react"],
+          "features": ["hot-reload", "type-checking", "jsx"]
+        },
+        "vue-pwa": {
+          "name": "Vue.js PWA",
+          "description": "Vue.js with Progressive Web App support",
+          "commands": ["npx @vue/cli create --pwa", "npm run serve"],
+          "dependencies": ["vue", "@vue/cli-plugin-pwa"],
+          "features": ["pwa", "vue-router", "vuex"]
+        },
+        "charting": {
+          "name": "Trading Charts",
+          "description": "Real-time charting and visualization libraries",
+          "dependencies": ["tradingview-widget", "chart.js", "d3", "lightweight-charts"],
+          "features": ["real-time", "candlestick", "technical-indicators"]
+        }
+      }
+    },
+    "backend": {
+      "name": "Backend Development",
+      "description": "API and microservices for trading infrastructure",
+      "tools": {
+        "nodejs-express": {
+          "name": "Node.js + Express",
+          "description": "RESTful API development with Node.js",
+          "commands": ["npm init -y", "npm install express", "node server.js"],
+          "dependencies": ["express", "cors", "helmet", "rate-limiter-flexible"],
+          "features": ["rest-api", "middleware", "security"]
+        },
+        "websocket-realtime": {
+          "name": "WebSocket Real-time",
+          "description": "Real-time data streaming with WebSockets",
+          "dependencies": ["ws", "socket.io", "uws"],
+          "features": ["real-time", "broadcasting", "rooms"]
+        },
+        "graphql-api": {
+          "name": "GraphQL API",
+          "description": "GraphQL API development tools",
+          "dependencies": ["apollo-server", "graphql", "type-graphql"],
+          "features": ["graphql", "subscriptions", "schema"]
+        }
+      }
+    },
+    "database": {
+      "name": "Database Integration",
+      "description": "Database tools for trading data storage",
+      "tools": {
+        "timeseries": {
+          "name": "Time-Series Database",
+          "description": "Time-series data for market data and analytics",
+          "dependencies": ["influx", "timescaledb", "knex"],
+          "features": ["time-series", "aggregation", "retention"]
+        },
+        "mongodb": {
+          "name": "MongoDB",
+          "description": "Document database for flexible data storage",
+          "dependencies": ["mongodb", "mongoose"],
+          "features": ["document-store", "schema", "aggregation"]
+        },
+        "redis-cache": {
+          "name": "Redis Cache",
+          "description": "In-memory caching and session management",
+          "dependencies": ["redis", "ioredis"],
+          "features": ["cache", "sessions", "pub-sub"]
+        }
+      }
+    },
+    "ai-ml": {
+      "name": "AI/ML Integration",
+      "description": "Machine learning tools for trading algorithms",
+      "tools": {
+        "ml-models": {
+          "name": "ML Models",
+          "description": "Pre-built trading models and algorithms",
+          "dependencies": ["tensorflow", "scikit-learn", "xgboost"],
+          "features": ["neural-networks", "ensemble", "backtesting"]
+        },
+        "data-processing": {
+          "name": "Data Processing",
+          "description": "Data preprocessing and feature engineering",
+          "dependencies": ["pandas", "numpy", "talib"],
+          "features": ["feature-engineering", "technical-indicators", "normalization"]
+        },
+        "model-deployment": {
+          "name": "Model Deployment",
+          "description": "Deploy and monitor ML models in production",
+          "dependencies": ["mlflow", "sagemaker", "kubeflow"],
+          "features": ["monitoring", "versioning", "scaling"]
+        }
+      }
+    },
+    "trading": {
+      "name": "Trading Infrastructure",
+      "description": "Specialized tools for trading systems",
+      "tools": {
+        "exchange-connectors": {
+          "name": "Exchange Connectors",
+          "description": "Connectors for various cryptocurrency exchanges",
+          "dependencies": ["ccxt", "binance-api-node", "coinbase-pro"],
+          "features": ["multi-exchange", "rest", "websocket"]
+        },
+        "risk-management": {
+          "name": "Risk Management",
+          "description": "Risk calculation and position management",
+          "dependencies": ["risk-js", "portfolio-analytics"],
+          "features": ["position-sizing", "risk-calculation", "portfolio"]
+        },
+        "order-management": {
+          "name": "Order Management",
+          "description": "Order execution and management system",
+          "dependencies": ["orderbook", "execution-engine"],
+          "features": ["order-types", "execution", "tracking"]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "setup:frontend": "npm install && npm run build",
+    "setup:backend": "npm install && npm run dev",
+    "setup:database": "docker-compose up -d",
+    "setup:ml": "pip install -r requirements.txt",
+    "setup:trading": "npm install && node setup-exchanges.js",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "npm run build:frontend && npm run build:backend",
+    "test": "jest && pytest",
+    "deploy": "docker build -t algotrade . && docker push algotrade"
+  },
+  "hooks": {
+    "pre-commit": "npm run lint && npm run test",
+    "pre-push": "npm run build && npm run integration-test",
+    "post-deploy": "npm run health-check"
+  }
+}

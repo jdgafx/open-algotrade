@@ -1,0 +1,14 @@
+{
+    "wallet_address": "0xYOUR_WALLET_ADDRESS",
+    "private_key": "YOUR_PRIVATE_KEY",
+    "sandbox_mode": true,
+    "max_portfolio_risk": 100000,
+    "daily_loss_limit": 5000,
+    "enable_market_making": true,
+    "enable_turtle_trading": true,
+    "enable_correlation": false,
+    "enable_mean_reversion": false,
+    "high_frequency_mode": false,
+    "parallel_execution": true,
+    "monitoring_enabled": true
+}

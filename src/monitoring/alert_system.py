@@ -13,10 +13,12 @@ from enum import Enum
 
 logger = logging.getLogger(__name__)
 
+
 class AlertLevel(Enum):
     INFO = "info"
     WARNING = "warning"
     CRITICAL = "critical"
+
 
 class AlertSystem:
     """
@@ -29,10 +31,12 @@ class AlertSystem:
     - Alert history tracking
     """
 
-    def __init__(self,
-                 discord_webhook_url: Optional[str] = None,
-                 email_enabled: bool = False,
-                 email_address: Optional[str] = None):
+    def __init__(
+        self,
+        discord_webhook_url: Optional[str] = None,
+        email_enabled: bool = False,
+        email_address: Optional[str] = None,
+    ):
         self.discord_webhook_url = discord_webhook_url
         self.email_enabled = email_enabled
         self.email_address = email_address
@@ -44,8 +48,14 @@ class AlertSystem:
 
         logger.info("Alert System initialized")
 
-    async def send_alert(self, title: str, message: str, level: AlertLevel = AlertLevel.INFO,
-                        symbol: Optional[str] = None, strategy: Optional[str] = None):
+    async def send_alert(
+        self,
+        title: str,
+        message: str,
+        level: AlertLevel = AlertLevel.INFO,
+        symbol: Optional[str] = None,
+        strategy: Optional[str] = None,
+    ):
         """Send alert through all configured channels"""
         try:
             # Check rate limiting
@@ -68,7 +78,7 @@ class AlertSystem:
                 "level": level.value,
                 "timestamp": datetime.now().isoformat(),
                 "symbol": symbol,
-                "strategy": strategy
+                "strategy": strategy,
             }
 
             # Add to history
@@ -100,14 +110,25 @@ class AlertSystem:
             else:
                 title = "Loss Alert"
                 message = f"Loss of ${abs(pnl_amount):.2f} realized"
-                level = AlertLevel.WARNING if abs(pnl_amount) < 1000 else AlertLevel.CRITICAL
+                level = (
+                    AlertLevel.WARNING
+                    if abs(pnl_amount) < 1000
+                    else AlertLevel.CRITICAL
+                )
 
             await self.send_alert(title, message, level, symbol)
 
         except Exception as e:
             logger.error(f"Error sending PnL alert: {e}")
 
-    async def send_position_alert(self, action: str, symbol: str, size: float, price: float, strategy: Optional[str] = None):
+    async def send_position_alert(
+        self,
+        action: str,
+        symbol: str,
+        size: float,
+        price: float,
+        strategy: Optional[str] = None,
+    ):
         """Send position opening/closing alert"""
         try:
             title = f"Position {action.title()}"
@@ -119,7 +140,9 @@ class AlertSystem:
         except Exception as e:
             logger.error(f"Error sending position alert: {e}")
 
-    async def send_risk_alert(self, risk_type: str, current_value: float, threshold: float):
+    async def send_risk_alert(
+        self, risk_type: str, current_value: float, threshold: float
+    ):
         """Send risk management alert"""
         try:
             title = f"Risk Alert: {risk_type}"
@@ -131,7 +154,9 @@ class AlertSystem:
         except Exception as e:
             logger.error(f"Error sending risk alert: {e}")
 
-    async def send_system_alert(self, message: str, level: AlertLevel = AlertLevel.WARNING):
+    async def send_system_alert(
+        self, message: str, level: AlertLevel = AlertLevel.WARNING
+    ):
         """Send system-level alert"""
         try:
             title = "System Alert"
@@ -148,11 +173,11 @@ class AlertSystem:
 
             # Choose color based on alert level
             colors = {
-                "info": 0x00ff00,      # Green
-                "warning": 0xffff00,   # Yellow
-                "critical": 0xff0000   # Red
+                "info": 0x00FF00,  # Green
+                "warning": 0xFFFF00,  # Yellow
+                "critical": 0xFF0000,  # Red
             }
-            color = colors.get(alert_data["level"], 0x00ff00)
+            color = colors.get(alert_data["level"], 0x00FF00)
 
             # Create Discord embed
             embed = {
@@ -160,36 +185,31 @@ class AlertSystem:
                 "description": alert_data["message"],
                 "color": color,
                 "timestamp": alert_data["timestamp"],
-                "fields": []
+                "fields": [],
             }
 
             # Add additional fields
             if alert_data.get("symbol"):
-                embed["fields"].append({
-                    "name": "Symbol",
-                    "value": alert_data["symbol"],
-                    "inline": True
-                })
+                embed["fields"].append(
+                    {"name": "Symbol", "value": alert_data["symbol"], "inline": True}
+                )
 
             if alert_data.get("strategy"):
-                embed["fields"].append({
-                    "name": "Strategy",
-                    "value": alert_data["strategy"],
-                    "inline": True
-                })
+                embed["fields"].append(
+                    {
+                        "name": "Strategy",
+                        "value": alert_data["strategy"],
+                        "inline": True,
+                    }
+                )
 
             # Prepare webhook payload
-            payload = {
-                "embeds": [embed],
-                "username": "Trading Bot Alerts"
-            }
+            payload = {"embeds": [embed], "username": "Trading Bot Alerts"}
 
             # Send webhook
             async with aiohttp.ClientSession() as session:
                 async with session.post(
-                    self.discord_webhook_url,
-                    json=payload,
-                    timeout=10
+                    self.discord_webhook_url, json=payload, timeout=10
                 ) as response:
                     if response.status == 204:
                         logger.debug("Discord alert sent successfully")
@@ -208,11 +228,13 @@ class AlertSystem:
             # This is a placeholder for email integration
             # In practice, you would integrate with services like:
             # - SendGrid
-            - AWS SES
-            - SMTP server
+            # - AWS SES
+            # - SMTP server
             # Or use a service like Resend, Mailgun, etc.
 
-            logger.info(f"Email alert would be sent to {self.email_address}: {alert_data['title']}")
+            logger.info(
+                f"Email alert would be sent to {self.email_address}: {alert_data['title']}"
+            )
 
         except Exception as e:
             logger.error(f"Error sending email alert: {e}")
@@ -226,13 +248,13 @@ class AlertSystem:
             message = f"""
 **Daily Performance Summary**
 
-Total PnL: ${performance_metrics.get('daily_pnl', 0):.2f}
-Win Rate: {performance_metrics.get('win_rate', 0):.1f}%
-Total Trades: {performance_metrics.get('total_trades', 0)}
-Active Positions: {performance_metrics.get('active_positions', 0)}
-Max Drawdown: {performance_metrics.get('max_drawdown', 0):.2%}
+Total PnL: ${performance_metrics.get("daily_pnl", 0):.2f}
+Win Rate: {performance_metrics.get("win_rate", 0):.1f}%
+Total Trades: {performance_metrics.get("total_trades", 0)}
+Active Positions: {performance_metrics.get("active_positions", 0)}
+Max Drawdown: {performance_metrics.get("max_drawdown", 0):.2%}
 
-*Report generated at {datetime.now().strftime('%H:%M:%S')}*
+*Report generated at {datetime.now().strftime("%H:%M:%S")}*
             """
 
             await self.send_alert(title, message, AlertLevel.INFO)
@@ -240,7 +262,9 @@ Max Drawdown: {performance_metrics.get('max_drawdown', 0):.2%}
         except Exception as e:
             logger.error(f"Error sending daily summary: {e}")
 
-    async def send_strategy_status(self, strategy_name: str, status: str, details: Optional[str] = None):
+    async def send_strategy_status(
+        self, strategy_name: str, status: str, details: Optional[str] = None
+    ):
         """Send strategy status update"""
         try:
             title = f"Strategy Status: {strategy_name}"
@@ -277,14 +301,22 @@ Max Drawdown: {performance_metrics.get('max_drawdown', 0):.2%}
 
             # Count by time period
             now = datetime.now().timestamp()
-            last_hour = sum(1 for alert in self.alert_history if now - alert.get("timestamp", 0) < 3600)
-            last_day = sum(1 for alert in self.alert_history if now - alert.get("timestamp", 0) < 86400)
+            last_hour = sum(
+                1
+                for alert in self.alert_history
+                if now - alert.get("timestamp", 0) < 3600
+            )
+            last_day = sum(
+                1
+                for alert in self.alert_history
+                if now - alert.get("timestamp", 0) < 86400
+            )
 
             return {
                 "total_alerts": len(self.alert_history),
                 "alerts_last_hour": last_hour,
                 "alerts_last_day": last_day,
-                "alerts_by_level": level_counts
+                "alerts_by_level": level_counts,
             }
 
         except Exception as e:
@@ -303,20 +335,20 @@ Max Drawdown: {performance_metrics.get('max_drawdown', 0):.2%}
             logger.info("Testing alert system...")
 
             await self.send_alert(
-                "Test Alert - Info",
-                "This is a test info alert",
-                AlertLevel.INFO
+                "Test Alert - Info", "This is a test info alert", AlertLevel.INFO
             )
 
             await self.send_alert(
                 "Test Alert - Warning",
                 "This is a test warning alert",
-                AlertLevel.WARNING
+                AlertLevel.WARNING,
             )
 
             await self.send_pnl_alert(150.50, "BTC")
 
-            await self.send_position_alert("OPENED", "ETH", 1.5, 2500.25, "Market Maker")
+            await self.send_position_alert(
+                "OPENED", "ETH", 1.5, 2500.25, "Market Maker"
+            )
 
             logger.info("✅ Alert system test completed")
 

@@ -27,10 +27,12 @@ from src.trading.vwap_strategy import VWAPStrategy
 from src.trading.market_maker import MarketMakerStrategy
 from src.trading.solana_sniper import SolanaSniperStrategy
 
+
 # Configuration for testing
 @dataclass
 class TestConfig:
     """Configuration for testing framework"""
+
     initial_capital: float = 100000.0
     commission_rate: float = 0.001
     slippage_rate: float = 0.0005
@@ -48,9 +50,11 @@ class TestConfig:
         if self.end_date is None:
             self.end_date = datetime.now()
 
+
 @dataclass
 class Trade:
     """Represents a single trade"""
+
     timestamp: datetime
     symbol: str
     side: str  # 'buy' or 'sell'
@@ -62,9 +66,11 @@ class Trade:
     pnl: float = 0.0
     equity: float = 0.0
 
+
 @dataclass
 class PerformanceMetrics:
     """Performance metrics for strategy evaluation"""
+
     total_return: float
     annualized_return: float
     sharpe_ratio: float
@@ -82,6 +88,7 @@ class PerformanceMetrics:
     largest_loss: float
     avg_holding_period: float
     calmar_ratio: float
+
 
 class BacktestEngine:
     """
@@ -103,7 +110,7 @@ class BacktestEngine:
 
         handler = logging.StreamHandler()
         formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
@@ -113,14 +120,14 @@ class BacktestEngine:
     def _initialize_strategies(self):
         """Initialize all trading strategies"""
         self.strategies = {
-            'sma': SMAStrategy(),
-            'rsi': RSIStrategy(),
-            'vwap': VWAPStrategy(),
-            'market_maker': MarketMakerStrategy(),
-            'solana_sniper': SolanaSniperStrategy()
+            "sma": SMAStrategy(),
+            "rsi": RSIStrategy(),
+            "vwap": VWAPStrategy(),
+            "market_maker": MarketMakerStrategy(),
+            "solana_sniper": SolanaSniperStrategy(),
         }
 
-    def load_historical_data(self, symbol: str, timeframe: str = '1h') -> pd.DataFrame:
+    def load_historical_data(self, symbol: str, timeframe: str = "1h") -> pd.DataFrame:
         """
         Load historical price data for backtesting
 
@@ -134,9 +141,7 @@ class BacktestEngine:
         try:
             # For now, generate sample data - replace with real data source
             dates = pd.date_range(
-                start=self.config.start_date,
-                end=self.config.end_date,
-                freq='1H'
+                start=self.config.start_date, end=self.config.end_date, freq="1H"
             )
 
             # Generate realistic price data
@@ -144,14 +149,16 @@ class BacktestEngine:
             returns = np.random.normal(0.0001, 0.02, len(dates))
             prices = 50000 * np.exp(np.cumsum(returns))
 
-            data = pd.DataFrame({
-                'timestamp': dates,
-                'open': prices,
-                'high': prices * (1 + np.random.uniform(0, 0.01, len(prices))),
-                'low': prices * (1 - np.random.uniform(0, 0.01, len(prices))),
-                'close': prices,
-                'volume': np.random.uniform(100, 1000, len(prices))
-            })
+            data = pd.DataFrame(
+                {
+                    "timestamp": dates,
+                    "open": prices,
+                    "high": prices * (1 + np.random.uniform(0, 0.01, len(prices))),
+                    "low": prices * (1 - np.random.uniform(0, 0.01, len(prices))),
+                    "close": prices,
+                    "volume": np.random.uniform(100, 1000, len(prices)),
+                }
+            )
 
             self.logger.info(f"Loaded {len(data)} data points for {symbol}")
             return data
@@ -160,7 +167,9 @@ class BacktestEngine:
             self.logger.error(f"Error loading data for {symbol}: {str(e)}")
             raise
 
-    def calculate_indicators(self, data: pd.DataFrame, strategy_name: str) -> pd.DataFrame:
+    def calculate_indicators(
+        self, data: pd.DataFrame, strategy_name: str
+    ) -> pd.DataFrame:
         """
         Calculate technical indicators for specific strategy
 
@@ -171,33 +180,37 @@ class BacktestEngine:
         Returns:
             DataFrame with added indicators
         """
-        if strategy_name == 'sma':
+        if strategy_name == "sma":
             # Simple Moving Average
-            data['sma_20'] = data['close'].rolling(20).mean()
-            data['sma_50'] = data['close'].rolling(50).mean()
-            data['signal'] = np.where(data['sma_20'] > data['sma_50'], 1, -1)
+            data["sma_20"] = data["close"].rolling(20).mean()
+            data["sma_50"] = data["close"].rolling(50).mean()
+            data["signal"] = np.where(data["sma_20"] > data["sma_50"], 1, -1)
 
-        elif strategy_name == 'rsi':
+        elif strategy_name == "rsi":
             # Relative Strength Index
-            delta = data['close'].diff()
+            delta = data["close"].diff()
             gain = (delta.where(delta > 0, 0)).rolling(14).mean()
             loss = (-delta.where(delta < 0, 0)).rolling(14).mean()
             rs = gain / loss
-            data['rsi'] = 100 - (100 / (1 + rs))
-            data['signal'] = np.where(data['rsi'] < 30, 1, np.where(data['rsi'] > 70, -1, 0))
+            data["rsi"] = 100 - (100 / (1 + rs))
+            data["signal"] = np.where(
+                data["rsi"] < 30, 1, np.where(data["rsi"] > 70, -1, 0)
+            )
 
-        elif strategy_name == 'vwap':
+        elif strategy_name == "vwap":
             # Volume Weighted Average Price
-            typical_price = (data['high'] + data['low'] + data['close']) / 3
-            vwap = (typical_price * data['volume']).cumsum() / data['volume'].cumsum()
-            data['vwap'] = vwap
-            data['signal'] = np.where(data['close'] > data['vwap'], 1, -1)
+            typical_price = (data["high"] + data["low"] + data["close"]) / 3
+            vwap = (typical_price * data["volume"]).cumsum() / data["volume"].cumsum()
+            data["vwap"] = vwap
+            data["signal"] = np.where(data["close"] > data["vwap"], 1, -1)
 
-        elif strategy_name == 'market_maker':
+        elif strategy_name == "market_maker":
             # Market making signals based on order book imbalance
-            data['mid_price'] = (data['high'] + data['low']) / 2
-            data['spread'] = (data['high'] - data['low']) / data['mid_price']
-            data['signal'] = np.where(data['spread'] > data['spread'].quantile(0.8), 1, 0)
+            data["mid_price"] = (data["high"] + data["low"]) / 2
+            data["spread"] = (data["high"] - data["low"]) / data["mid_price"]
+            data["signal"] = np.where(
+                data["spread"] > data["spread"].quantile(0.8), 1, 0
+            )
 
         return data
 
@@ -207,7 +220,7 @@ class BacktestEngine:
         current_price: float,
         timestamp: datetime,
         symbol: str,
-        strategy_name: str
+        strategy_name: str,
     ) -> Optional[Trade]:
         """
         Simulate trade execution with slippage and commission
@@ -228,10 +241,10 @@ class BacktestEngine:
         # Apply slippage
         if signal == 1:  # Buy
             execution_price = current_price * (1 + self.config.slippage_rate)
-            side = 'buy'
+            side = "buy"
         else:  # Sell
             execution_price = current_price * (1 - self.config.slippage_rate)
-            side = 'sell'
+            side = "sell"
 
         # Calculate commission
         quantity = 1000  # Fixed position size for backtesting
@@ -245,7 +258,7 @@ class BacktestEngine:
             price=execution_price,
             commission=commission,
             strategy=strategy_name,
-            signal=str(signal)
+            signal=str(signal),
         )
 
         return trade
@@ -278,23 +291,22 @@ class BacktestEngine:
         # Simulate trading
         for i, row in data.iterrows():
             # Update equity
-            current_equity = cash + (position * row['close'])
+            current_equity = cash + (position * row["close"])
             equity_values.append(current_equity)
 
             # Generate trading signal
-            signal = row.get('signal', 0)
+            signal = row.get("signal", 0)
 
             # Execute trade if signal exists
             if signal != 0 and position == 0:  # No open position
                 trade = self.simulate_trade_execution(
-                    signal, row['close'], row['timestamp'],
-                    symbol, strategy_name
+                    signal, row["close"], row["timestamp"], symbol, strategy_name
                 )
                 if trade:
                     # Update position and cash
                     if signal == 1:  # Buy
                         position = trade.quantity
-                        cash -= (trade.price * trade.quantity + trade.commission)
+                        cash -= trade.price * trade.quantity + trade.commission
                     else:  # Sell
                         position = -trade.quantity
                         cash -= trade.commission
@@ -304,33 +316,31 @@ class BacktestEngine:
             elif position != 0:  # Close position on opposite signal
                 close_signal = -1 if position > 0 else 1
                 trade = self.simulate_trade_execution(
-                    close_signal, row['close'], row['timestamp'],
-                    symbol, strategy_name
+                    close_signal, row["close"], row["timestamp"], symbol, strategy_name
                 )
                 if trade:
                     # Calculate PnL
                     if position > 0:  # Long position
-                        pnl = (row['close'] - trades[-1].price) * abs(position)
+                        pnl = (row["close"] - trades[-1].price) * abs(position)
                     else:  # Short position
-                    pnl = (trades[-1].price - row['close']) * abs(position)
+                        pnl = (trades[-1].price - row["close"]) * abs(position)
 
                     trade.pnl = pnl - trade.commission
-                    trade.equity = cash + (position * row['close'])
+                    trade.equity = cash + (position * row["close"])
 
                     # Close position
                     if position > 0:
-                        cash += (row['close'] * position - trade.commission)
+                        cash += row["close"] * position - trade.commission
                     else:
-                        cash -= (row['close'] * abs(position) + trade.commission)
+                        cash -= row["close"] * abs(position) + trade.commission
 
                     position = 0
                     trades.append(trade)
 
         # Create equity curve
-        self.equity_curve = pd.DataFrame({
-            'timestamp': data['timestamp'],
-            'equity': equity_values
-        })
+        self.equity_curve = pd.DataFrame(
+            {"timestamp": data["timestamp"], "equity": equity_values}
+        )
 
         # Calculate performance metrics
         metrics = self._calculate_performance_metrics(trades, equity_values)
@@ -339,9 +349,7 @@ class BacktestEngine:
         return metrics
 
     def _calculate_performance_metrics(
-        self,
-        trades: List[Trade],
-        equity_values: List[float]
+        self, trades: List[Trade], equity_values: List[float]
     ) -> PerformanceMetrics:
         """
         Calculate comprehensive performance metrics
@@ -357,7 +365,9 @@ class BacktestEngine:
             return PerformanceMetrics(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
         # Basic metrics
-        total_return = (equity_values[-1] - self.config.initial_capital) / self.config.initial_capital
+        total_return = (
+            equity_values[-1] - self.config.initial_capital
+        ) / self.config.initial_capital
         days = (self.config.end_date - self.config.start_date).days
         annualized_return = (1 + total_return) ** (365 / days) - 1 if days > 0 else 0
 
@@ -368,7 +378,7 @@ class BacktestEngine:
         win_rate = len(profitable_trades) / len(trades) if trades else 0
         total_profit = sum(t.pnl for t in profitable_trades) if profitable_trades else 0
         total_loss = abs(sum(t.pnl for t in losing_trades)) if losing_trades else 1
-        profit_factor = total_profit / total_loss if total_loss > 0 else float('inf')
+        profit_factor = total_profit / total_loss if total_loss > 0 else float("inf")
 
         # Risk metrics
         equity_series = pd.Series(equity_values)
@@ -378,21 +388,35 @@ class BacktestEngine:
 
         # Sharpe ratio
         returns = equity_series.pct_change().dropna()
-        excess_returns = returns - self.config.risk_free_rate / 252  # Daily risk-free rate
-        sharpe_ratio = np.sqrt(252) * excess_returns.mean() / excess_returns.std() if len(excess_returns) > 1 else 0
+        excess_returns = (
+            returns - self.config.risk_free_rate / 252
+        )  # Daily risk-free rate
+        sharpe_ratio = (
+            np.sqrt(252) * excess_returns.mean() / excess_returns.std()
+            if len(excess_returns) > 1
+            else 0
+        )
 
         # Sortino ratio
         downside_returns = returns[returns < 0]
-        sortino_ratio = np.sqrt(252) * excess_returns.mean() / downside_returns.std() if len(downside_returns) > 0 else 0
+        sortino_ratio = (
+            np.sqrt(252) * excess_returns.mean() / downside_returns.std()
+            if len(downside_returns) > 0
+            else 0
+        )
 
         # Calmar ratio
         calmar_ratio = annualized_return / abs(max_drawdown) if max_drawdown != 0 else 0
 
         # Trade statistics
         avg_trade = np.mean([t.pnl for t in trades]) if trades else 0
-        avg_win = np.mean([t.pnl for t in profitable_trades]) if profitable_trades else 0
+        avg_win = (
+            np.mean([t.pnl for t in profitable_trades]) if profitable_trades else 0
+        )
         avg_loss = np.mean([t.pnl for t in losing_trades]) if losing_trades else 0
-        largest_win = max([t.pnl for t in profitable_trades]) if profitable_trades else 0
+        largest_win = (
+            max([t.pnl for t in profitable_trades]) if profitable_trades else 0
+        )
         largest_loss = min([t.pnl for t in losing_trades]) if losing_trades else 0
 
         # Average holding period (would need entry/exit times from actual trades)
@@ -415,8 +439,9 @@ class BacktestEngine:
             largest_win=largest_win,
             largest_loss=largest_loss,
             avg_holding_period=avg_holding_period,
-            calmar_ratio=calmar_ratio
+            calmar_ratio=calmar_ratio,
         )
+
 
 class RiskManager:
     """
@@ -428,7 +453,9 @@ class RiskManager:
         self.max_leverage = max_leverage
         self.logger = logging.getLogger("RiskManager")
 
-    def validate_position_sizing(self, trades: List[Trade], portfolio_value: float) -> bool:
+    def validate_position_sizing(
+        self, trades: List[Trade], portfolio_value: float
+    ) -> bool:
         """
         Validate that position sizes are within limits
 
@@ -451,7 +478,9 @@ class RiskManager:
 
         return True
 
-    def calculate_var(self, returns: pd.Series, confidence_level: float = 0.05) -> float:
+    def calculate_var(
+        self, returns: pd.Series, confidence_level: float = 0.05
+    ) -> float:
         """
         Calculate Value at Risk (VaR)
 
@@ -465,9 +494,7 @@ class RiskManager:
         return returns.quantile(confidence_level)
 
     def stress_test_portfolio(
-        self,
-        portfolio: Dict[str, float],
-        market_shocks: Dict[str, float]
+        self, portfolio: Dict[str, float], market_shocks: Dict[str, float]
     ) -> Dict[str, float]:
         """
         Stress test portfolio against market shocks
@@ -494,6 +521,7 @@ class RiskManager:
 
         return results
 
+
 class PaperTradingSimulator:
     """
     Paper trading simulator for real-time strategy testing
@@ -506,7 +534,9 @@ class PaperTradingSimulator:
         self.trades = []
         self.logger = logging.getLogger("PaperTradingSimulator")
 
-    async def start_simulation(self, strategies: List[str], symbols: List[str], duration_hours: int = 24):
+    async def start_simulation(
+        self, strategies: List[str], symbols: List[str], duration_hours: int = 24
+    ):
         """
         Start paper trading simulation
 
@@ -515,7 +545,9 @@ class PaperTradingSimulator:
             symbols: List of symbols to trade
             duration_hours: Duration of simulation in hours
         """
-        self.logger.info(f"Starting paper trading simulation for {duration_hours} hours")
+        self.logger.info(
+            f"Starting paper trading simulation for {duration_hours} hours"
+        )
 
         start_time = datetime.now()
         end_time = start_time + timedelta(hours=duration_hours)
@@ -532,7 +564,9 @@ class PaperTradingSimulator:
 
                     # Execute trade if signal exists
                     if signal != 0:
-                        self._execute_paper_trade(strategy_name, symbol, signal, current_price)
+                        self._execute_paper_trade(
+                            strategy_name, symbol, signal, current_price
+                        )
 
             # Wait for next iteration
             await asyncio.sleep(60)  # Check every minute
@@ -550,13 +584,17 @@ class PaperTradingSimulator:
         np.random.seed(int(time.time()))
         return base_price * (1 + np.random.normal(0, 0.01))
 
-    def _generate_signal(self, strategy_name: str, symbol: str, current_price: float) -> int:
+    def _generate_signal(
+        self, strategy_name: str, symbol: str, current_price: float
+    ) -> int:
         """Generate trading signal for strategy"""
         # Simplified signal generation - implement actual strategy logic
         np.random.seed(hash(f"{strategy_name}{symbol}{current_price}") % 2**32)
         return np.random.choice([-1, 0, 1], p=[0.1, 0.8, 0.1])
 
-    def _execute_paper_trade(self, strategy_name: str, symbol: str, signal: int, price: float):
+    def _execute_paper_trade(
+        self, strategy_name: str, symbol: str, signal: int, price: float
+    ):
         """Execute paper trade"""
         position_key = f"{strategy_name}_{symbol}"
         position_size = 1000  # Fixed size for simulation
@@ -566,65 +604,73 @@ class PaperTradingSimulator:
             cost = position_size * price
             if cost <= self.current_capital:
                 self.positions[position_key] = {
-                    'quantity': position_size,
-                    'entry_price': price,
-                    'entry_time': datetime.now()
+                    "quantity": position_size,
+                    "entry_price": price,
+                    "entry_time": datetime.now(),
                 }
                 self.current_capital -= cost
 
                 trade = Trade(
                     timestamp=datetime.now(),
                     symbol=symbol,
-                    side='buy',
+                    side="buy",
                     quantity=position_size,
                     price=price,
                     commission=0,  # No commission in paper trading
                     strategy=strategy_name,
-                    signal=str(signal)
+                    signal=str(signal),
                 )
                 self.trades.append(trade)
-                self.logger.info(f"Paper trade executed: BUY {position_size} {symbol} @ {price}")
+                self.logger.info(
+                    f"Paper trade executed: BUY {position_size} {symbol} @ {price}"
+                )
 
         elif signal == -1 and position_key in self.positions:
             # Sell position
             position = self.positions[position_key]
-            proceeds = position['quantity'] * price
-            pnl = proceeds - (position['quantity'] * position['entry_price'])
+            proceeds = position["quantity"] * price
+            pnl = proceeds - (position["quantity"] * position["entry_price"])
 
             self.current_capital += proceeds
 
             trade = Trade(
                 timestamp=datetime.now(),
                 symbol=symbol,
-                side='sell',
-                quantity=position['quantity'],
+                side="sell",
+                quantity=position["quantity"],
                 price=price,
                 commission=0,
                 strategy=strategy_name,
                 signal=str(signal),
-                pnl=pnl
+                pnl=pnl,
             )
             self.trades.append(trade)
 
             del self.positions[position_key]
-            self.logger.info(f"Paper trade executed: SELL {position['quantity']} {symbol} @ {price}, PnL: {pnl:.2f}")
+            self.logger.info(
+                f"Paper trade executed: SELL {position['quantity']} {symbol} @ {price}, PnL: {pnl:.2f}"
+            )
 
     def _generate_report(self) -> Dict:
         """Generate paper trading report"""
         total_trades = len(self.trades)
-        profitable_trades = len([t for t in self.trades if hasattr(t, 'pnl') and t.pnl > 0])
-        total_pnl = sum([t.pnl for t in self.trades if hasattr(t, 'pnl')])
+        profitable_trades = len(
+            [t for t in self.trades if hasattr(t, "pnl") and t.pnl > 0]
+        )
+        total_pnl = sum([t.pnl for t in self.trades if hasattr(t, "pnl")])
 
         return {
-            'initial_capital': self.initial_capital,
-            'final_capital': self.current_capital,
-            'total_return': (self.current_capital - self.initial_capital) / self.initial_capital,
-            'total_trades': total_trades,
-            'profitable_trades': profitable_trades,
-            'win_rate': profitable_trades / total_trades if total_trades > 0 else 0,
-            'total_pnl': total_pnl,
-            'open_positions': len(self.positions)
+            "initial_capital": self.initial_capital,
+            "final_capital": self.current_capital,
+            "total_return": (self.current_capital - self.initial_capital)
+            / self.initial_capital,
+            "total_trades": total_trades,
+            "profitable_trades": profitable_trades,
+            "win_rate": profitable_trades / total_trades if total_trades > 0 else 0,
+            "total_pnl": total_pnl,
+            "open_positions": len(self.positions),
         }
+
 
 # Main testing orchestrator
 class TradingSystemTester:
@@ -649,11 +695,11 @@ class TradingSystemTester:
         self.logger.info("Starting comprehensive trading system testing")
 
         results = {
-            'backtest_results': {},
-            'risk_validation': {},
-            'paper_trading': {},
-            'stress_tests': {},
-            'generated_at': datetime.now().isoformat()
+            "backtest_results": {},
+            "risk_validation": {},
+            "paper_trading": {},
+            "stress_tests": {},
+            "generated_at": datetime.now().isoformat(),
         }
 
         # 1. Run backtests for all strategies
@@ -661,8 +707,8 @@ class TradingSystemTester:
             for strategy_name in self.backtest_engine.strategies.keys():
                 try:
                     key = f"{strategy_name}_{symbol}"
-                    results['backtest_results'][key] = self.backtest_engine.run_backtest(
-                        symbol, strategy_name
+                    results["backtest_results"][key] = (
+                        self.backtest_engine.run_backtest(symbol, strategy_name)
                     )
                     self.logger.info(f"Completed backtest for {key}")
                 except Exception as e:
@@ -670,26 +716,34 @@ class TradingSystemTester:
 
         # 2. Validate risk management
         if self.backtest_engine.trades:
-            results['risk_validation']['position_sizing'] = self.risk_manager.validate_position_sizing(
-                self.backtest_engine.trades, self.config.initial_capital
+            results["risk_validation"]["position_sizing"] = (
+                self.risk_manager.validate_position_sizing(
+                    self.backtest_engine.trades, self.config.initial_capital
+                )
             )
 
         # 3. Run stress tests
         market_shocks = {
-            'market_crash': -0.30,
-            'flash_crash': -0.15,
-            'bull_market': 0.50,
-            'bear_market': -0.40
+            "market_crash": -0.30,
+            "flash_crash": -0.15,
+            "bull_market": 0.50,
+            "bear_market": -0.40,
         }
 
-        test_portfolio = {'BTC/USDT': 50000, 'ETH/USDT': 30000, 'SOL/USDT': 20000}
-        results['stress_tests'] = self.risk_manager.stress_test_portfolio(test_portfolio, market_shocks)
+        test_portfolio = {"BTC/USDT": 50000, "ETH/USDT": 30000, "SOL/USDT": 20000}
+        results["stress_tests"] = self.risk_manager.stress_test_portfolio(
+            test_portfolio, market_shocks
+        )
 
         # 4. Run paper trading simulation
         try:
-            strategies = list(self.backtest_engine.strategies.keys())[:2]  # Test first 2 strategies
-            results['paper_trading'] = await self.paper_trader.start_simulation(
-                strategies, self.config.test_symbols[:2], duration_hours=1  # 1 hour test
+            strategies = list(self.backtest_engine.strategies.keys())[
+                :2
+            ]  # Test first 2 strategies
+            results["paper_trading"] = await self.paper_trader.start_simulation(
+                strategies,
+                self.config.test_symbols[:2],
+                duration_hours=1,  # 1 hour test
             )
         except Exception as e:
             self.logger.error(f"Paper trading failed: {str(e)}")
@@ -712,7 +766,9 @@ class TradingSystemTester:
         report.append("COMPREHENSIVE TRADING SYSTEM TEST REPORT")
         report.append("=" * 80)
         report.append(f"Generated: {results['generated_at']}")
-        report.append(f"Test Period: {self.config.start_date} to {self.config.end_date}")
+        report.append(
+            f"Test Period: {self.config.start_date} to {self.config.end_date}"
+        )
         report.append(f"Initial Capital: ${self.config.initial_capital:,.2f}")
         report.append("")
 
@@ -720,7 +776,7 @@ class TradingSystemTester:
         report.append("BACKTEST RESULTS")
         report.append("-" * 40)
 
-        for strategy_symbol, metrics in results['backtest_results'].items():
+        for strategy_symbol, metrics in results["backtest_results"].items():
             report.append(f"\n{strategy_symbol.upper()}:")
             report.append(f"  Total Return: {metrics.total_return:.2%}")
             report.append(f"  Annualized Return: {metrics.annualized_return:.2%}")
@@ -733,22 +789,24 @@ class TradingSystemTester:
         report.append("\nRISK MANAGEMENT VALIDATION")
         report.append("-" * 40)
 
-        if 'position_sizing' in results['risk_validation']:
-            position_valid = results['risk_validation']['position_sizing']
-            report.append(f"Position Sizing: {'✅ PASSED' if position_valid else '❌ FAILED'}")
+        if "position_sizing" in results["risk_validation"]:
+            position_valid = results["risk_validation"]["position_sizing"]
+            report.append(
+                f"Position Sizing: {'✅ PASSED' if position_valid else '❌ FAILED'}"
+            )
 
         # Stress Test Results
         report.append("\nSTRESS TEST RESULTS")
         report.append("-" * 40)
 
-        for scenario, pnl in results['stress_tests'].items():
+        for scenario, pnl in results["stress_tests"].items():
             report.append(f"{scenario.replace('_', ' ').title()}: ${pnl:,.2f}")
 
         # Paper Trading Results
-        if results['paper_trading']:
+        if results["paper_trading"]:
             report.append("\nPAPER TRADING SIMULATION")
             report.append("-" * 40)
-            pt = results['paper_trading']
+            pt = results["paper_trading"]
             report.append(f"Return: {pt['total_return']:.2%}")
             report.append(f"Win Rate: {pt['win_rate']:.2%}")
             report.append(f"Total Trades: {pt['total_trades']}")
@@ -758,19 +816,21 @@ class TradingSystemTester:
 
         return "\n".join(report)
 
+
 if __name__ == "__main__":
     # Example usage
     config = TestConfig(
         initial_capital=100000.0,
         commission_rate=0.001,
         slippage_rate=0.0005,
-        test_symbols=["BTC/USDT", "ETH/USDT"]
+        test_symbols=["BTC/USDT", "ETH/USDT"],
     )
 
     tester = TradingSystemTester(config)
 
     # Run tests (async)
     import asyncio
+
     results = asyncio.run(tester.run_comprehensive_tests())
 
     # Generate report

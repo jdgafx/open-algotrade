@@ -18,20 +18,23 @@ from ..utils.hyperliquid_client import HyperliquidClient, MarketData, Position
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class TurtleConfig:
     """Configuration for turtle trading strategy"""
+
     symbol: str
     timeframe: str  # "1m", "5m", "15m", "1h", "4h"
+    size: Decimal
     lookback_period: int = 55
     atr_period: int = 20
-    atr_multiplier: Decimal = Decimal('2.0')
-    take_profit_percentage: Decimal = Decimal('0.002')  # 0.2%
-    size: Decimal
+    atr_multiplier: Decimal = Decimal("2.0")
+    take_profit_percentage: Decimal = Decimal("0.002")  # 0.2%
     leverage: int = 5
     trading_hours_only: bool = True
     exit_friday: bool = True
-    max_position_size: Decimal
+    max_position_size: Decimal = Decimal("1000")
+
 
 class EnhancedTurtleTrader:
     """
@@ -59,11 +62,13 @@ class EnhancedTurtleTrader:
         # Performance tracking
         self.total_trades = 0
         self.winning_trades = 0
-        self.total_pnl = Decimal('0')
-        self.max_drawdown = Decimal('0')
-        self.peak_balance = Decimal('0')
+        self.total_pnl = Decimal("0")
+        self.max_drawdown = Decimal("0")
+        self.peak_balance = Decimal("0")
 
-        logger.info(f"Initialized Enhanced Turtle Trader for {config.symbol} on {config.timeframe}")
+        logger.info(
+            f"Initialized Enhanced Turtle Trader for {config.symbol} on {config.timeframe}"
+        )
 
     async def start(self):
         """Start the turtle trading bot"""
@@ -71,55 +76,57 @@ class EnhancedTurtleTrader:
 
         while True:
             try:
-                # Check if we should be trading (time-based)
-                if self.config.trading_hours_only and not await self._is_trading_time():
-                    logger.debug("Outside trading hours, waiting...")
-                    await asyncio.sleep(60)
-                    continue
-
-                # Friday exit check
-                if self.config.exit_friday and await self._is_friday_close():
-                    await self._close_friday_position()
-                    await asyncio.sleep(300)  # Wait 5 minutes
-                    continue
-
-                # Get current market data and position
-                market_data = await self.client.get_market_data(self.config.symbol)
-                positions = await self.client.get_positions()
-
-                # Update current position
-                self.current_position = next(
-                    (pos for pos in positions if pos.symbol == self.config.symbol),
-                    None
-                )
-
-                # Get OHLCV data for analysis
-                ohlcv_data = await self.client.get_ohlcv(
-                    self.config.symbol,
-                    self.config.timeframe,
-                    self.config.lookback_period + 20
-                )
-
-                if len(ohlcv_data) < self.config.lookback_period:
-                    logger.warning("Insufficient OHLCV data")
-                    await asyncio.sleep(10)
-                    continue
-
-                # Analyze market and make trading decisions
-                await self._analyze_and_trade(market_data, ohlcv_data)
-
+                await self.iteration()
                 await asyncio.sleep(self._get_sleep_interval())
 
             except Exception as e:
                 logger.error(f"Error in turtle trading loop: {e}")
                 await asyncio.sleep(30)
 
-    async def _analyze_and_trade(self, market_data: MarketData, ohlcv_data: List[Tuple]):
+    async def iteration(self):
+        """Single iteration of the turtle trading logic"""
+        # Check if we should be trading (time-based)
+        if self.config.trading_hours_only and not await self._is_trading_time():
+            logger.debug("Outside trading hours, waiting...")
+            return
+
+        # Friday exit check
+        if self.config.exit_friday and await self._is_friday_close():
+            await self._close_friday_position()
+            return
+
+        # Get current market data and position
+        market_data = await self.client.get_market_data(self.config.symbol)
+        positions = await self.client.get_positions()
+
+        # Update current position
+        self.current_position = next(
+            (pos for pos in positions if pos.symbol == self.config.symbol), None
+        )
+
+        # Get OHLCV data for analysis
+        ohlcv_data = await self.client.get_ohlcv(
+            self.config.symbol, self.config.timeframe, self.config.lookback_period + 20
+        )
+
+        if len(ohlcv_data) < self.config.lookback_period:
+            logger.warning("Insufficient OHLCV data")
+            return
+
+        # Analyze market and make trading decisions
+        await self._analyze_and_trade(market_data, ohlcv_data)
+
+    async def _analyze_and_trade(
+        self, market_data: MarketData, ohlcv_data: List[Tuple]
+    ):
         """Main analysis and trading logic"""
         try:
             # Convert to DataFrame for easier analysis
-            df = pd.DataFrame(ohlcv_data, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
-            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+            df = pd.DataFrame(
+                ohlcv_data,
+                columns=["timestamp", "open", "high", "low", "close", "volume"],
+            )
+            df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
 
             # Calculate ATR
             df = self._calculate_atr(df)
@@ -138,36 +145,46 @@ class EnhancedTurtleTrader:
         except Exception as e:
             logger.error(f"Error in analysis: {e}")
 
-    async def _check_entry_signals(self, df: pd.DataFrame, current_price: Decimal, last_candle: pd.Series):
+    async def _check_entry_signals(
+        self, df: pd.DataFrame, current_price: Decimal, last_candle: pd.Series
+    ):
         """Check for turtle trading entry signals"""
         try:
             # Calculate 55-bar high and low
             lookback_data = df.tail(self.config.lookback_period)
-            highest_high = lookback_data['high'].max()
-            lowest_low = lookback_data['low'].min()
+            highest_high = lookback_data["high"].max()
+            lowest_low = lookback_data["low"].min()
 
             # Current candle's open and close
-            current_open = df.iloc[-1]['open']
-            current_close = df.iloc[-1]['close']
+            current_open = df.iloc[-1]["open"]
+            current_close = df.iloc[-1]["close"]
 
             # Long entry: breakout above 55-bar high
-            if (current_price >= highest_high and
-                current_open < highest_high and
-                current_close > last_candle['close']):
-
-                logger.info(f"🟢 LONG SIGNAL: Price {current_price} broke above 55-bar high {highest_high}")
-                await self._enter_long(current_price, df.iloc[-1]['atr'])
+            if (
+                current_price >= highest_high
+                and current_open < highest_high
+                and current_close > last_candle["close"]
+            ):
+                logger.info(
+                    f"🟢 LONG SIGNAL: Price {current_price} broke above 55-bar high {highest_high}"
+                )
+                await self._enter_long(current_price, df.iloc[-1]["atr"])
 
             # Short entry: breakdown below 55-bar low
-            elif (current_price <= lowest_low and
-                  current_open > lowest_low and
-                  current_close < last_candle['close']):
-
-                logger.info(f"🔴 SHORT SIGNAL: Price {current_price} broke below 55-bar low {lowest_low}")
-                await self._enter_short(current_price, df.iloc[-1]['atr'])
+            elif (
+                current_price <= lowest_low
+                and current_open > lowest_low
+                and current_close < last_candle["close"]
+            ):
+                logger.info(
+                    f"🔴 SHORT SIGNAL: Price {current_price} broke below 55-bar low {lowest_low}"
+                )
+                await self._enter_short(current_price, df.iloc[-1]["atr"])
 
             else:
-                logger.debug(f"No entry signal. Current: {current_price}, High: {highest_high}, Low: {lowest_low}")
+                logger.debug(
+                    f"No entry signal. Current: {current_price}, High: {highest_high}, Low: {lowest_low}"
+                )
 
         except Exception as e:
             logger.error(f"Error checking entry signals: {e}")
@@ -193,17 +210,21 @@ class EnhancedTurtleTrader:
                 size=position_size,
                 order_type="limit",
                 price=limit_price,
-                time_in_force="PostOnly"
+                time_in_force="PostOnly",
             )
 
             if order_response.get("status") == "ok":
-                logger.info(f"✅ Long entry order placed: {position_size} @ {limit_price}")
+                logger.info(
+                    f"✅ Long entry order placed: {position_size} @ {limit_price}"
+                )
 
                 # Set exit levels
                 self.entry_price = limit_price
                 self.entry_time = time.time()
                 self.stop_loss_price = limit_price - (atr * self.config.atr_multiplier)
-                self.take_profit_price = limit_price * (Decimal('1') + self.config.take_profit_percentage)
+                self.take_profit_price = limit_price * (
+                    Decimal("1") + self.config.take_profit_percentage
+                )
 
                 self.total_trades += 1
 
@@ -234,17 +255,21 @@ class EnhancedTurtleTrader:
                 size=position_size,
                 order_type="limit",
                 price=limit_price,
-                time_in_force="PostOnly"
+                time_in_force="PostOnly",
             )
 
             if order_response.get("status") == "ok":
-                logger.info(f"✅ Short entry order placed: {position_size} @ {limit_price}")
+                logger.info(
+                    f"✅ Short entry order placed: {position_size} @ {limit_price}"
+                )
 
                 # Set exit levels
                 self.entry_price = limit_price
                 self.entry_time = time.time()
                 self.stop_loss_price = limit_price + (atr * self.config.atr_multiplier)
-                self.take_profit_price = limit_price * (Decimal('1') - self.config.take_profit_percentage)
+                self.take_profit_price = limit_price * (
+                    Decimal("1") - self.config.take_profit_percentage
+                )
 
                 self.total_trades += 1
 
@@ -261,7 +286,7 @@ class EnhancedTurtleTrader:
                 return
 
             # Update stop loss with trailing ATR
-            current_atr = df.iloc[-1]['atr']
+            current_atr = df.iloc[-1]["atr"]
             await self._update_trailing_stop(current_price, current_atr)
 
             # Check if price hit stop loss or take profit
@@ -327,11 +352,13 @@ class EnhancedTurtleTrader:
                 side=exit_side,
                 size=position_size,
                 order_type="market",
-                reduce_only=True
+                reduce_only=True,
             )
 
             if order_response.get("status") == "ok":
-                logger.info(f"✅ Position exited via {exit_reason}: {position_size} {exit_side}")
+                logger.info(
+                    f"✅ Position exited via {exit_reason}: {position_size} {exit_side}"
+                )
 
                 # Update performance metrics
                 if self.current_position.unrealized_pnl > 0:
@@ -352,17 +379,19 @@ class EnhancedTurtleTrader:
         except Exception as e:
             logger.error(f"Error exiting position: {e}")
 
-    async def _calculate_position_size(self, entry_price: Decimal, atr: Decimal) -> Decimal:
+    async def _calculate_position_size(
+        self, entry_price: Decimal, atr: Decimal
+    ) -> Decimal:
         """Calculate optimal position size based on risk"""
         try:
             # Get account information
             account_info = await self.client.get_account_info()
-            available_balance = account_info.get("available_balance", Decimal('0'))
+            available_balance = account_info.get("available_balance", Decimal("0"))
 
             # Risk per trade: 1% of account or 2x ATR, whichever is smaller
             max_risk_per_trade = min(
-                available_balance * Decimal('0.01'),  # 1% of account
-                atr * self.config.atr_multiplier * self.config.size  # 2x ATR risk
+                available_balance * Decimal("0.01"),  # 1% of account
+                atr * self.config.atr_multiplier * self.config.size,  # 2x ATR risk
             )
 
             # Calculate position size
@@ -375,33 +404,33 @@ class EnhancedTurtleTrader:
             position_size = min(position_size, self.config.max_position_size)
 
             # Ensure minimum position size
-            if position_size < self.config.size * Decimal('0.1'):
-                position_size = Decimal('0')
+            if position_size < self.config.size * Decimal("0.1"):
+                position_size = Decimal("0")
 
             return position_size
 
         except Exception as e:
             logger.error(f"Error calculating position size: {e}")
-            return Decimal('0')
+            return Decimal("0")
 
     def _calculate_atr(self, df: pd.DataFrame) -> pd.DataFrame:
         """Calculate Average True Range"""
         try:
             # Calculate True Range
-            df['previous_close'] = df['close'].shift(1)
-            df['high-low'] = abs(df['high'] - df['low'])
-            df['high-pc'] = abs(df['high'] - df['previous_close'])
-            df['low-pc'] = abs(df['low'] - df['previous_close'])
-            df['tr'] = df[['high-low', 'high-pc', 'low-pc']].max(axis=1)
+            df["previous_close"] = df["close"].shift(1)
+            df["high-low"] = abs(df["high"] - df["low"])
+            df["high-pc"] = abs(df["high"] - df["previous_close"])
+            df["low-pc"] = abs(df["low"] - df["previous_close"])
+            df["tr"] = df[["high-low", "high-pc", "low-pc"]].max(axis=1)
 
             # Calculate ATR
-            df['atr'] = df['tr'].rolling(window=self.config.atr_period).mean()
+            df["atr"] = df["tr"].rolling(window=self.config.atr_period).mean()
 
             return df
 
         except Exception as e:
             logger.error(f"Error calculating ATR: {e}")
-            df['atr'] = 0
+            df["atr"] = 0
             return df
 
     async def _is_trading_time(self) -> bool:
@@ -459,13 +488,7 @@ class EnhancedTurtleTrader:
 
     def _get_sleep_interval(self) -> int:
         """Get sleep interval based on timeframe"""
-        timeframe_intervals = {
-            "1m": 10,
-            "5m": 30,
-            "15m": 60,
-            "1h": 300,
-            "4h": 600
-        }
+        timeframe_intervals = {"1m": 10, "5m": 30, "15m": 60, "1h": 300, "4h": 600}
         return timeframe_intervals.get(self.config.timeframe, 60)
 
     def get_performance_stats(self) -> Dict:
@@ -479,16 +502,32 @@ class EnhancedTurtleTrader:
                 "losing_trades": self.total_trades - self.winning_trades,
                 "win_rate": win_rate,
                 "total_pnl": float(self.total_pnl),
-                "average_pnl_per_trade": float(self.total_pnl / max(self.total_trades, 1)),
+                "average_pnl_per_trade": float(
+                    self.total_pnl / max(self.total_trades, 1)
+                ),
                 "current_position": {
-                    "symbol": self.current_position.symbol if self.current_position else None,
-                    "size": float(self.current_position.size) if self.current_position else 0,
-                    "side": self.current_position.side if self.current_position else None,
-                    "unrealized_pnl": float(self.current_position.unrealized_pnl) if self.current_position else 0
+                    "symbol": self.current_position.symbol
+                    if self.current_position
+                    else None,
+                    "size": float(self.current_position.size)
+                    if self.current_position
+                    else 0,
+                    "side": self.current_position.side
+                    if self.current_position
+                    else None,
+                    "unrealized_pnl": float(self.current_position.unrealized_pnl)
+                    if self.current_position
+                    else 0,
                 },
-                "time_in_position": (time.time() - self.entry_time) if self.entry_time else 0,
-                "stop_loss": float(self.stop_loss_price) if self.stop_loss_price else None,
-                "take_profit": float(self.take_profit_price) if self.take_profit_price else None
+                "time_in_position": (time.time() - self.entry_time)
+                if self.entry_time
+                else 0,
+                "stop_loss": float(self.stop_loss_price)
+                if self.stop_loss_price
+                else None,
+                "take_profit": float(self.take_profit_price)
+                if self.take_profit_price
+                else None,
             }
         except Exception as e:
             logger.error(f"Error getting performance stats: {e}")
