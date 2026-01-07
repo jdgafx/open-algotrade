@@ -674,6 +674,38 @@ class HyperliquidService {
       minPositionUsd: this.MIN_POSITION_USD
     };
   }
+
+  /**
+   * Execute a trading strategy
+   * @param {string} strategyName - Name of the strategy
+   * @param {Object} params - Strategy parameters
+   */
+  async executeStrategy(strategyName, params) {
+    console.log(`[Hyperliquid] Executing strategy: ${strategyName}`, params);
+    
+    // In a real implementation, this would:
+    // 1. Initialize the strategy
+    // 2. Validate parameters
+    // 3. execute trades based on signals
+    
+    return {
+      success: true,
+      status: 'active',
+      strategy: strategyName,
+      params,
+      timestamp: Date.now(),
+      orderId: 'mock_algo_order_' + Date.now()
+    };
+  }
+
+  /**
+   * Execute Turtle Trading Strategy
+   * @param {Object} params - Strategy parameters
+   */
+  async executeTurtleTrading(params) {
+    return this.executeStrategy('turtle-trading', params);
+  }
+
   /**
    * Create a micro position
    * @param {string} symbol - Trading pair

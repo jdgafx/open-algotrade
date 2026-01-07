@@ -248,7 +248,7 @@ export default class AIOptimizer {
                 ${JSON.stringify(marketData)}
                 
                 Strategy Parameters:
-                ${JSON.stringify(strategy.parameters)}
+                ${JSON.stringify((strategy && strategy.parameters) || {})}
                 
                 Provide:
                 1. Signal direction (buy/sell/hold)

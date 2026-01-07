@@ -557,12 +557,15 @@ export default class UltimateTradingApp {
             if (await puter.auth.isSignedIn()) {
                 this.currentUser = await puter.auth.getUser();
 
-                // Load subscription
-                await this.services.subscriptionManager.loadUserSubscription();
+                if (this.currentUser && this.currentUser.id) {
+                    // Load subscription
+                    await this.services.subscriptionManager.loadUserSubscription(this.currentUser.id);
 
-                // Load active strategies
-                await this.loadActiveStrategies();
-
+                    // Load active strategies
+                    await this.loadActiveStrategies();
+                } else {
+                    console.warn('User signed in but no ID found');
+                }
             }
         } catch (error) {
             console.error('Failed to load user data:', error);

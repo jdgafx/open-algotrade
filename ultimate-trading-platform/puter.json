@@ -1,0 +1,8 @@
+{
+  "name": "ultimate-trading-platform",
+  "entrypoint": "npm start",
+  "description": "Professional Node.js/React Hybrid Trading Platform",
+  "requirements": {
+    "node": ">=18"
+  }
+}

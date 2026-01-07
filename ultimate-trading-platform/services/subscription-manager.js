@@ -62,6 +62,15 @@ export default class SubscriptionManager {
   }
 
   /**
+   * Load user subscription (Alias for getUserSubscription to match test expectations)
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Subscription data
+   */
+  async loadUserSubscription(userId) {
+    return this.getUserSubscription(userId);
+  }
+
+  /**
    * Get subscription key for a user
    * @param {string} userId - User ID
    * @returns {string} Storage key

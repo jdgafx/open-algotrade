@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DB_HOST=timescaledb
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=trading
+    depends_on:
+      - redis
+      - timescaledb
+    networks:
+      - trading-network
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - trading-network
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=trading
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+    networks:
+      - trading-network
+
+volumes:
+  redis_data:
+  timescale_data:
+
+networks:
+  trading-network:
+    driver: bridge
