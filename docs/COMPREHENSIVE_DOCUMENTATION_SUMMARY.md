@@ -1,6 +1,6 @@
 # LLVM Ultimate Builder - Comprehensive Documentation Summary
 
-**Project:** MoonDev Algorithmic Trading System
+**Project:** Kairos Algorithmic Trading System
 **Document Version:** 1.0.0
 **Date:** 2025-12-03
 **Author:** Claude Code - OpenAPI Documentation Specialist
@@ -17,17 +17,17 @@ This document provides a complete summary of the comprehensive documentation cre
 
 ### Files Created
 
-1. **`/home/chris/dev/moondev-algotrade/docs/LLVM_BUILDER_DOCUMENTATION.md`**
+1. **`/home/chris/dev/kairos-algotrade/docs/LLVM_BUILDER_DOCUMENTATION.md`**
    - **Size:** ~47,000 words (comprehensive guide)
    - **Sections:** 8 major sections, 25+ subsections
    - **Content:** Complete fix process, architecture, code changes, usage, optimizations, troubleshooting
 
-2. **`/home/chris/dev/moondev-algotrade/docs/INLINE_COMMENTS_REFERENCE.md`**
+2. **`/home/chris/dev/kairos-algotrade/docs/INLINE_COMMENTS_REFERENCE.md`**
    - **Size:** ~8,000 words
    - **Content:** Quick reference for inline comments and code annotations
    - **Purpose:** Rapid lookup for understanding code without reading full docs
 
-3. **`/home/chris/dev/moondev-algotrade/scripts/llvm_ultimate_builder.sh`**
+3. **`/home/chris/dev/kairos-algotrade/scripts/llvm_ultimate_builder.sh`**
    - **Lines:** 575 lines
    - **Purpose:** Production-ready high-performance LLVM/Clang build script
    - **Features:** Intelligent parallelization, advanced caching, LTO/PGO optimization
@@ -325,7 +325,7 @@ PARALLEL_JOBS=4 ENABLE_LTO=OFF
 ## Contact & Support
 
 **Documentation Maintainer:** Claude Code - OpenAPI Documentation Specialist
-**Location:** `/home/chris/dev/moondev-algotrade/docs/`
+**Location:** `/home/chris/dev/kairos-algotrade/docs/`
 **Memory Tags:** `hive/docs/comprehensive`
 **Version:** 1.0.0
 **Last Updated:** 2025-12-03

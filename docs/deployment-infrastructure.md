@@ -51,9 +51,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cluster-config
-  namespace: moondev
+  namespace: kairos
 data:
-  cluster.name: "moondev-trading"
+  cluster.name: "kairos-trading"
   cluster.environment: "production"
   cluster.region: "us-east-1"
   cluster.version: "1.28"
@@ -68,27 +68,27 @@ data:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: moondev-trading
+  name: kairos-trading
   labels:
-    name: moondev-trading
+    name: kairos-trading
     environment: production
 
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: moondev-monitoring
+  name: kairos-monitoring
   labels:
-    name: moondev-monitoring
+    name: kairos-monitoring
     environment: production
 
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: moondev-logging
+  name: kairos-logging
   labels:
-    name: moondev-logging
+    name: kairos-logging
     environment: production
 ```
 
@@ -99,7 +99,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: strategy-orchestrator
-  namespace: moondev-trading
+  namespace: kairos-trading
   labels:
     app: strategy-orchestrator
     version: v1
@@ -129,7 +129,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: orchestrator
-        image: moondev/strategy-orchestrator:latest
+        image: kairos/strategy-orchestrator:latest
         ports:
         - containerPort: 8000
           name: http
@@ -210,7 +210,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: strategy-orchestrator
-  namespace: moondev-trading
+  namespace: kairos-trading
   labels:
     app: strategy-orchestrator
 spec:
@@ -228,7 +228,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: strategy-orchestrator-hpa
-  namespace: moondev-trading
+  namespace: kairos-trading
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -278,7 +278,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: risk-manager
-  namespace: moondev-trading
+  namespace: kairos-trading
   labels:
     app: risk-manager
     version: v1
@@ -308,7 +308,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: risk-manager
-        image: moondev/risk-manager:latest
+        image: kairos/risk-manager:latest
         ports:
         - containerPort: 8001
           name: http
@@ -377,7 +377,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: risk-manager
-  namespace: moondev-trading
+  namespace: kairos-trading
   labels:
     app: risk-manager
 spec:
@@ -398,7 +398,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: market-data-ingestor
-  namespace: moondev-trading
+  namespace: kairos-trading
   labels:
     app: market-data-ingestor
 spec:
@@ -424,7 +424,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: ingestor
-        image: moondev/market-data-ingestor:latest
+        image: kairos/market-data-ingestor:latest
         ports:
         - containerPort: 8002
           name: http
@@ -487,7 +487,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: market-data-ingestor
-  namespace: moondev-trading
+  namespace: kairos-trading
   labels:
     app: market-data-ingestor
 spec:
@@ -538,7 +538,7 @@ spec:
         - --cloud-provider=aws
         - --skip-nodes-with-local-storage=false
         - --expander=least-waste
-        - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/moondev-trading
+        - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/kairos-trading
         - --balance-similar-node-groups
         - --skip-nodes-with-system-pods=false
         - --max-node-provision-time=300s
@@ -549,7 +549,7 @@ spec:
         - --scale-down-delay-after-add=3m
         - --scale-down-delay-after-delete=1m
         - --max-graceful-termination-sec=600
-        - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/moondev-trading
+        - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/kairos-trading
 ```
 
 ### Vertical Pod Autoscaler
@@ -559,7 +559,7 @@ apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
   name: strategy-orchestrator-vpa
-  namespace: moondev-trading
+  namespace: kairos-trading
 spec:
   targetRef:
     apiVersion: apps/v1
@@ -583,7 +583,7 @@ apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
   name: risk-manager-vpa
-  namespace: moondev-trading
+  namespace: kairos-trading
 spec:
   targetRef:
     apiVersion: apps/v1
@@ -618,7 +618,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: moondev
+  IMAGE_NAME: kairos
 
 jobs:
   test:
@@ -732,12 +732,12 @@ jobs:
         aws-region: us-east-1
 
     - name: Update kubeconfig
-      run: aws eks update-kubeconfig --name moondev-staging
+      run: aws eks update-kubeconfig --name kairos-staging
 
     - name: Deploy to staging
       run: |
-        helm upgrade --install moondev-staging ./helm/moondev \
-          --namespace moondev-staging \
+        helm upgrade --install kairos-staging ./helm/kairos \
+          --namespace kairos-staging \
           --create-namespace \
           --set environment=staging \
           --set image.tag=main \
@@ -746,7 +746,7 @@ jobs:
 
     - name: Run smoke tests
       run: |
-        kubectl wait --for=condition=ready pod -l app=strategy-orchestrator -n moondev-staging --timeout=300s
+        kubectl wait --for=condition=ready pod -l app=strategy-orchestrator -n kairos-staging --timeout=300s
         python scripts/smoke_tests.py --environment=staging
 
   deploy-production:
@@ -765,13 +765,13 @@ jobs:
         aws-region: us-east-1
 
     - name: Update kubeconfig
-      run: aws eks update-kubeconfig --name moondev-production
+      run: aws eks update-kubeconfig --name kairos-production
 
     - name: Deploy to production (Blue-Green)
       run: |
         # Create new green deployment
-        helm upgrade --install moondev-green ./helm/moondev \
-          --namespace moondev-production \
+        helm upgrade --install kairos-green ./helm/kairos \
+          --namespace kairos-production \
           --set environment=production \
           --set deployment.color=green \
           --set image.tag=main \
@@ -782,7 +782,7 @@ jobs:
         python scripts/health_checks.py --deployment=green
 
         # Switch traffic to green
-        kubectl patch service strategy-orchestrator -p '{"spec":{"selector":{"color":"green"}}}' -n moondev-production
+        kubectl patch service strategy-orchestrator -p '{"spec":{"selector":{"color":"green"}}}' -n kairos-production
 
         # Wait for cutover verification
         sleep 30
@@ -791,13 +791,13 @@ jobs:
         python scripts/production_verification.py
 
         # Clean up blue deployment
-        helm uninstall moondev-blue -n moondev-production || true
+        helm uninstall kairos-blue -n kairos-production || true
 
     - name: Post-deployment verification
       run: |
         python scripts/post_deployment_tests.py --environment=production
-        kubectl get pods -n moondev-production
-        kubectl get services -n moondev-production
+        kubectl get pods -n kairos-production
+        kubectl get services -n kairos-production
 
     - name: Notify on deployment success
       uses: 8398a7/action-slack@v3
@@ -811,10 +811,10 @@ jobs:
 
 ### Helm Chart Structure
 ```yaml
-# helm/moondev/Chart.yaml
+# helm/kairos/Chart.yaml
 apiVersion: v2
-name: moondev
-description: MoonDev Algorithmic Trading Platform
+name: kairos
+description: Kairos Algorithmic Trading Platform
 type: application
 version: 1.0.0
 appVersion: "1.0.0"
@@ -823,12 +823,12 @@ keywords:
   - algorithmic-trading
   - cryptocurrency
   - defi
-home: https://github.com/moondev/algotrade
+home: https://github.com/kairos/algotrade
 sources:
-  - https://github.com/moondev/algotrade
+  - https://github.com/kairos/algotrade
 maintainers:
-  - name: MoonDev Team
-    email: team@moondev.com
+  - name: Kairos Team
+    email: team@kairos.com
 dependencies:
   - name: postgresql
     version: 12.x.x
@@ -855,7 +855,7 @@ dependencies:
     repository: https://grafana.github.io/helm-charts
     condition: monitoring.enabled
 
-# helm/moondev/values.yaml
+# helm/kairos/values.yaml
 environment: production
 deployment:
   color: blue  # For blue-green deployments
@@ -867,7 +867,7 @@ deployment:
     monitoringDashboard: 1
 
 images:
-  repository: ghcr.io/moondev
+  repository: ghcr.io/kairos
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -912,9 +912,9 @@ database:
     enabled: true
     auth:
       postgresPassword: "changeme"
-      username: "moondev"
+      username: "kairos"
       password: "changeme"
-      database: "moondev_prod"
+      database: "kairos_prod"
     primary:
       persistence:
         enabled: true
@@ -976,16 +976,16 @@ ingress:
     nginx.ingress.kubernetes.io/rate-limit-window: "1m"
   tls:
     - hosts:
-        - api.moondev.com
-        - dashboard.moondev.com
-      secretName: moondev-tls
+        - api.kairos.com
+        - dashboard.kairos.com
+      secretName: kairos-tls
   hosts:
-    - host: api.moondev.com
+    - host: api.kairos.com
       paths:
         - path: /
           pathType: Prefix
           service: api-gateway
-    - host: dashboard.moondev.com
+    - host: dashboard.kairos.com
       paths:
         - path: /
           pathType: Prefix
@@ -1001,7 +1001,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: database-backup
-  namespace: moondev-trading
+  namespace: kairos-trading
 spec:
   schedule: "0 2 * * *"  # Daily at 2 AM
   jobTemplate:
@@ -1016,7 +1016,7 @@ spec:
             - -c
             - |
               TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-              BACKUP_FILE="moondev_backup_${TIMESTAMP}.sql"
+              BACKUP_FILE="kairos_backup_${TIMESTAMP}.sql"
 
               pg_dump $DATABASE_URL > /backup/${BACKUP_FILE}
 
@@ -1024,16 +1024,16 @@ spec:
               gzip /backup/${BACKUP_FILE}
 
               # Upload to S3
-              aws s3 cp /backup/${BACKUP_FILE}.gz s3://moondev-backups/database/${BACKUP_FILE}.gz
+              aws s3 cp /backup/${BACKUP_FILE}.gz s3://kairos-backups/database/${BACKUP_FILE}.gz
 
               # Clean up old backups (keep last 30 days)
-              aws s3 ls s3://moondev-backups/database/ | while read -r line; do
+              aws s3 ls s3://kairos-backups/database/ | while read -r line; do
                 createDate=`echo $line | awk '{print $1" "$2}'`
                 createDate=`date -d"$createDate" +%s`
                 olderThan=`date -d"30 days ago" +%s`
                 if [[ $createDate -lt $olderThan ]]; then
                   fileName=`echo $line | awk '{print $4}'`
-                  aws s3 rm s3://moondev-backups/database/$fileName
+                  aws s3 rm s3://kairos-backups/database/$fileName
                 fi
               done
             env:
@@ -1068,13 +1068,13 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: regional-failover
-  namespace: moondev-trading
+  namespace: kairos-trading
 spec:
   template:
     spec:
       containers:
       - name: failover
-        image: moondev/disaster-recovery:latest
+        image: kairos/disaster-recovery:latest
         command:
         - /bin/bash
         - -c

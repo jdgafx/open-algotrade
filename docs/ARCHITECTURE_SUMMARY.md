@@ -1,8 +1,8 @@
-# MoonDev AlgoTrade - Complete Architecture Summary
+# Kairos AlgoTrade - Complete Architecture Summary
 
 ## Executive Summary
 
-This document provides a comprehensive overview of the MoonDev Algorithmic Trading System architecture, designed for immediate profitability while building for long-term scale. The system combines proven trading strategies with enterprise-grade infrastructure, comprehensive risk management, and automated fail-safe mechanisms.
+This document provides a comprehensive overview of the Kairos Algorithmic Trading System architecture, designed for immediate profitability while building for long-term scale. The system combines proven trading strategies with enterprise-grade infrastructure, comprehensive risk management, and automated fail-safe mechanisms.
 
 ## Architecture Overview
 
@@ -10,7 +10,7 @@ This document provides a comprehensive overview of the MoonDev Algorithmic Tradi
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                            MoonDev Trading System                              │
+│                            Kairos Trading System                              │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                API Gateway                                     │
 │                       (Rate Limiting, Auth, Load Balancing)                    │
@@ -195,7 +195,7 @@ This document provides a comprehensive overview of the MoonDev Algorithmic Tradi
 ### 1. Infrastructure Setup (Day 1)
 ```bash
 # Set up development environment
-git clone https://github.com/moondev/algotrade.git
+git clone https://github.com/kairos/algotrade.git
 cd algotrade
 docker-compose up -d  # Start local development stack
 
@@ -211,7 +211,7 @@ kubectl apply -f k8s/deployments/strategy-orchestrator.yaml
 kubectl apply -f k8s/deployments/market-maker.yaml
 
 # Monitor deployment
-kubectl logs -f deployment/strategy-orchestrator -n moondev-trading
+kubectl logs -f deployment/strategy-orchestrator -n kairos-trading
 ```
 
 ### 3. Configure Risk Management (Day 3)
@@ -221,7 +221,7 @@ kubectl apply -f k8s/deployments/risk-manager.yaml
 kubectl apply -f config/production/risk-limits.yaml
 
 # Verify risk controls are active
-kubectl get pods -n moondev-trading
+kubectl get pods -n kairos-trading
 ```
 
 ### 4. Enable Monitoring (Day 4)
@@ -230,7 +230,7 @@ kubectl get pods -n moondev-trading
 helm install prometheus prometheus-community/kube-prometheus-stack
 kubectl apply -f k8s/monitoring/grafana-dashboards.yaml
 
-# Access dashboard at https://dashboard.moondev.com
+# Access dashboard at https://dashboard.kairos.com
 ```
 
 ## Critical Success Factors
@@ -255,7 +255,7 @@ kubectl apply -f k8s/monitoring/grafana-dashboards.yaml
 
 ## Conclusion
 
-The MoonDev Algorithmic Trading System provides a robust, scalable foundation for immediate profitability while building enterprise-grade trading capabilities. The modular architecture allows for rapid iteration and strategy deployment, while comprehensive risk management ensures capital protection.
+The Kairos Algorithmic Trading System provides a robust, scalable foundation for immediate profitability while building enterprise-grade trading capabilities. The modular architecture allows for rapid iteration and strategy deployment, while comprehensive risk management ensures capital protection.
 
 **Immediate Actions Required:**
 

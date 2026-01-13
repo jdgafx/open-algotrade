@@ -6,7 +6,7 @@ that will allow you to access the data channel called: #crypto_data_unlimited
 
 Discord invite - https://discord.gg/8UPuVZ53bh 
 
-if you haven't been assigned your discord role, please email moondevonyt@gmail.com
+if you haven't been assigned your discord role, please email kairosonyt@gmail.com
 from the email you signed up with and we will get your role assigned asap
 '''
 

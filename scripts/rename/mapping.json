@@ -1,0 +1,23 @@
+{
+  "mappings": [
+    { "old": "moondev-algotrade", "new": "kairos-cc", "context": "package.json, paths" },
+    { "old": "moondev-command-center", "new": "kairos-command-center", "context": "package.json" },
+    { "old": "MoonDev", "new": "Kairos", "context": "Branding, UI" },
+    { "old": "moondev", "new": "kairos", "context": "Lower-case branding, paths" },
+    { "old": "moonDev", "new": "kairos", "context": "Camel-case branding" },
+    { "old": "moondev-trading", "new": "kairos-trading", "context": "Kubernetes namespaces, services" },
+    { "old": "moondev_prod", "new": "kairos_prod", "context": "Database names" },
+    { "old": "moondev_dev", "new": "kairos_dev", "context": "Database names" }
+  ],
+  "exclusions": [
+    "node_modules",
+    ".git",
+    "vendor",
+    "atc_bootcamp"
+  ],
+  "high_risk_files": [
+    "src/ui/package-lock.json",
+    "squashfs-root/resources/backend/.env",
+    "opencode-antigravity-auth/dist/src/constants.js"
+  ]
+}

@@ -81,7 +81,7 @@ class ConfigurationManager:
         self.logger = logging.getLogger(__name__)
 
         # Configuration paths
-        self.base_path = Path("/home/chris/dev/moondev-algotrade/config")
+        self.base_path = Path("/home/chris/dev/kairos-algotrade/config")
         self.env_path = self.base_path / environment.value
 
         # Initialize configuration
@@ -444,7 +444,7 @@ system:
   database:
     host: "localhost"
     port: 5432
-    name: "moondev_dev"
+    name: "kairos_dev"
     username: "postgres"
     pool_size: 5
     max_overflow: 10
@@ -502,7 +502,7 @@ system:
     host: "0.0.0.0"
     port: 8000
     workers: 12
-    cors_origins: ["https://dashboard.moondev.com"]
+    cors_origins: ["https://dashboard.kairos.com"]
 
   orchestrator:
     max_concurrent_strategies: 50

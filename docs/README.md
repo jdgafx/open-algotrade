@@ -1,4 +1,4 @@
-# MoonDev Algo Trading System
+# Kairos Algo Trading System
 
 🚀 **High-Performance Cryptocurrency Trading with Advanced AI Strategies**
 
@@ -48,8 +48,8 @@ A sophisticated, multi-strategy trading system built for Hyperliquid with millis
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/moondev-algotrade.git
-cd moondev-algotrade
+git clone https://github.com/your-repo/kairos-algotrade.git
+cd kairos-algotrade
 
 # Create virtual environment
 python -m venv venv
@@ -181,7 +181,7 @@ python main.py --backtest
 ## 📁 Project Structure
 
 ```
-moondev-algotrade/
+kairos-algotrade/
 ├── src/
 │   ├── engine/
 │   │   └── trading_engine.py      # Main orchestration
@@ -231,9 +231,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- 📧 Email: support@moondev-trading.com
-- 💬 Discord: [Join our community](https://discord.gg/moondev)
-- 📖 Documentation: [Wiki](https://github.com/your-repo/moondev-algotrade/wiki)
+- 📧 Email: support@kairos-trading.com
+- 💬 Discord: [Join our community](https://discord.gg/kairos)
+- 📖 Documentation: [Wiki](https://github.com/your-repo/kairos-algotrade/wiki)
 
 ---
 

@@ -3,29 +3,35 @@
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
 
-# Claude Flow generated files
-.claude/settings.local.json
-.mcp.json
-claude-flow.config.json
-.swarm/
+# Local Environment & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+squashfs-root/resources/backend/.env
+config.json
+!config.example.json
+dontshare.py
+config_keys.py
+
+# Build & Dist
+dist/
+build/
+.next/
+node_modules/
+
+# Logs & Storage
+logs/
+*.log
+*.db
+*.sqlite
 .hive-mind/
 .claude-flow/
-memory/
 coordination/
-memory/claude-flow-data.json
-memory/sessions/*
-!memory/sessions/README.md
-memory/agents/*
-!memory/agents/README.md
-coordination/memory_bank/*
-coordination/subtasks/*
-coordination/orchestration/*
-*.db
-*.db-journal
-*.db-wal
-*.sqlite
-*.sqlite-journal
-*.sqlite-wal
-claude-flow
+memory/
+
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
+squashfs-root/
+src/ui/node_modules/
