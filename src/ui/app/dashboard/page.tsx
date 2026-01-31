@@ -1,17 +1,31 @@
-import { TradingStats } from "@/components/dashboard/TradingStats";
-import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
-import { RecentTrades } from "@/components/dashboard/RecentTrades";
-import { MarketOverview } from "@/components/dashboard/MarketOverview";
+import { TradingTerminal } from '@/components/TradingTerminal';
+import { StrategyMarketplace } from '@/components/StrategyMarketplace';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-8 p-8">
-      <TradingStats />
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <PerformanceChart />
-        <RecentTrades />
+    <div className="container mx-auto py-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">OpenAlgo Dashboard</h1>
+          <p className="text-muted-foreground">Professional algorithmic trading on HyperLiquid</p>
+        </div>
       </div>
-      <MarketOverview />
+
+      <Tabs defaultValue="market" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="market">Market Overview</TabsTrigger>
+          <TabsTrigger value="strategies">Strategy Marketplace</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="market">
+          <TradingTerminal />
+        </TabsContent>
+
+        <TabsContent value="strategies">
+          <StrategyMarketplace />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

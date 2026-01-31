@@ -20,6 +20,15 @@ export default function Home() {
 
         <WalletManager />
         
+        <div className="flex justify-center gap-4">
+          <a 
+            href="/dashboard" 
+            className="px-6 py-3 rounded-lg bg-moon-green text-moon-bg font-semibold hover:bg-moon-green/90 transition-colors"
+          >
+            Launch Dashboard →
+          </a>
+        </div>
+        
         <div className="text-center">
              <p className="text-xs text-moon-text-dim/30 font-mono">
                 SYSTEM STATUS: ONLINE • ACCESS: OPEN • LICENSE: MIT
